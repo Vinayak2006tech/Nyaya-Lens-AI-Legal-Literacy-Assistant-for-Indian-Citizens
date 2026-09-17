@@ -75,71 +75,73 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       {/* Main Landing Page Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
         {/* Top Mini Brand Navigation */}
-        <div className="flex items-center justify-between pb-8 border-b border-slate-200/60">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-amber-600 flex items-center justify-center text-white shadow-sm ring-2 ring-indigo-50">
-              <Scale className="w-5 h-5" />
+        <div className="flex items-center justify-between pb-6 sm:pb-8 border-b border-slate-200/60 gap-2 sm:gap-4">
+          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-amber-600 flex items-center justify-center text-white shadow-sm ring-2 ring-indigo-50 flex-shrink-0">
+              <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl font-bold tracking-tight text-slate-900 font-['Outfit']">
+            <div className="min-w-0">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <span className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 font-['Outfit'] truncate">
                   Nyaya Lens
                 </span>
-                <span className="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-2 py-0.5 rounded-full">
+                <span className="text-[10px] sm:text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap">
                   न्याय लेन्स
                 </span>
               </div>
-              <span className="text-xs text-slate-500 font-medium hidden sm:inline">
+              <span className="text-xs text-slate-500 font-medium hidden md:inline truncate block">
                 AI Legal-Literacy Assistant for Indian Citizens
               </span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-3">
-            <span className="hidden lg:inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
+          <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
+            <span className="hidden xl:inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
               <ShieldCheck className="w-3.5 h-3.5 mr-1 text-emerald-600" />
               IBM Granite 3 & watsonx.governance
             </span>
 
             {currentUser ? (
-              <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
-                  <div className="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold text-xs flex items-center justify-center">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <div className="flex items-center space-x-1.5 sm:space-x-2 bg-slate-50 border border-slate-200 px-2 sm:px-3 py-1.5 rounded-xl max-w-[130px] sm:max-w-[180px]">
+                  <div className="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold text-[10px] sm:text-xs flex items-center justify-center flex-shrink-0">
                     {currentUser.name.substring(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-xs font-bold text-slate-800">{currentUser.name}</span>
+                  <span className="text-xs font-bold text-slate-800 truncate hidden sm:inline">{currentUser.name}</span>
                 </div>
                 <button
                   onClick={onStart}
-                  className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98 whitespace-nowrap"
                 >
-                  <span>Go to Workspace</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span className="hidden xs:inline">Workspace</span>
+                  <span className="xs:hidden">App</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 <button
                   onClick={onLogout}
-                  className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-rose-700 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-all shadow-2xs"
+                  className="inline-flex items-center justify-center p-1.5 sm:px-3 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-rose-700 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-all shadow-2xs"
                   title="Sign out of your account"
                 >
                   <LogOut className="w-3.5 h-3.5 text-rose-600" />
-                  <span>Sign Out</span>
+                  <span className="hidden sm:inline sm:ml-1.5">Sign Out</span>
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-700 bg-white border border-slate-300 hover:border-indigo-300 transition-all shadow-2xs"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-700 bg-white border border-slate-300 hover:border-indigo-300 transition-all shadow-2xs whitespace-nowrap"
                 >
                   <Lock className="w-3.5 h-3.5 text-indigo-600" />
                   <span>Log In</span>
                 </button>
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98 whitespace-nowrap"
                 >
-                  <span>Register Free</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span className="hidden sm:inline">Register Free</span>
+                  <span className="sm:hidden">Register</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             )}
