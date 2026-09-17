@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Scale, 
   ArrowRight, 
@@ -16,7 +16,14 @@ import {
   PhoneCall,
   Lock,
   User,
-  LogOut
+  LogOut,
+  Gavel,
+  Check,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  FileSearch,
+  Sparkle
 } from 'lucide-react';
 import LineWaves from './LineWaves';
 import SplitFlapText from './SplitFlapText';
@@ -31,6 +38,136 @@ interface LandingPageProps {
   onLogout: () => void;
 }
 
+interface ShowcaseDoc {
+  id: string;
+  type: string;
+  title: string;
+  hindiTitle: string;
+  badge: string;
+  badgeColor: string;
+  originalClause: string;
+  riskScore: number;
+  riskLevel: 'HIGH' | 'MEDIUM' | 'LOW';
+  plainLanguage: {
+    en: string;
+    hi: string;
+  };
+  statute: {
+    act: string;
+    section: string;
+    provision: string;
+    authority: string;
+  };
+  actionItems: string[];
+}
+
+const SHOWCASE_DOCS: ShowcaseDoc[] = [
+  {
+    id: 'rent',
+    type: 'Rental Agreement',
+    title: 'Arbitrary Security Deposit Forfeiture & Lock-in Clause',
+    hindiTitle: 'किराया समझौता: मनमाना डिपॉजिट जब्ती व पेनल्टी क्लॉज',
+    badge: 'Rental Lease',
+    badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+    originalClause: 'Clause 14: In case the Tenant vacates prior to the expiry of the mandatory 11-month lock-in period for any reason whatsoever, the entire security deposit of Rs. 95,000 shall stand unconditionally forfeited as liquidated damages, along with a penal surcharge of Rs. 1,000 per day until re-letting.',
+    riskScore: 9.2,
+    riskLevel: 'HIGH',
+    plainLanguage: {
+      en: 'The landlord is claiming 100% of your ₹95,000 deposit plus an illegal ₹1,000/day penalty if you move out before 11 months. Indian law strictly prohibits unreasonable penal forfeiture that does not represent actual documented damage.',
+      hi: 'मकान मालिक आपसे 11 महीने से पहले खाली करने पर पूरा ₹95,000 डिपॉजिट जब्त करने और ₹1,000 प्रतिदिन का अतिरिक्त जुर्माना वसूलने का दावा कर रहा है। भारतीय कानून बिना वास्तविक नुकसान के ऐसा भारी जुर्माना लगाने की सख्त मनाही करता है।'
+    },
+    statute: {
+      act: 'Indian Contract Act, 1872',
+      section: 'Section 74',
+      provision: 'Compensation for breach of contract where penalty is stipulated — Court awards only reasonable compensation, penal forfeitures are void.',
+      authority: 'Rent Authority / Civil Court / National Consumer Forum (NCH 1915)'
+    },
+    actionItems: [
+      'Do not sign this clause without the statutory 30-day notice exception.',
+      'Cite Section 74 of the Indian Contract Act in your written lease reply.',
+      'Demand replacement with the Model Tenancy Act 2021 standard 1-month notice clause.'
+    ]
+  },
+  {
+    id: 'fir',
+    type: 'Police / Cyber Notice',
+    title: 'Extortionate "Digital Arrest" & Counterfeit Police Summons',
+    hindiTitle: 'फर्जी डिजिटल अरेस्ट व साइबर जबरन वसूली नोटिस',
+    badge: 'Police / Cyber FIR',
+    badgeColor: 'bg-rose-100 text-rose-800 border-rose-200',
+    originalClause: 'OFFICIAL ORDER OF DIGITAL ARREST: You are under continuous video surveillance by the Cyber Crime Investigation Cell. You are commanded to stay inside your room on Skype/WhatsApp video call and transfer Rs. 1,40,000 to the RBI Clearing Escrow account for asset verification or face instant non-bailable arrest under BNS Sec 351.',
+    riskScore: 10.0,
+    riskLevel: 'HIGH',
+    plainLanguage: {
+      en: 'CRITICAL ALERT: This is a criminal extortion scam! There is NO such concept as "Digital Arrest" in the Indian legal system or Bharatiya Nagarik Suraksha Sanhita (BNSS). Real police or CBI officers never conduct arrests over Skype or ask you to transfer funds.',
+      hi: 'गंभीर चेतावनी: यह एक फर्जी साइबर जबरन वसूली फ्रॉड है! भारतीय न्याय प्रणाली या पुलिस कानून में "डिजिटल अरेस्ट" जैसा कोई प्रावधान नहीं है। वास्तविक पुलिस या जांच एजेंसियां कभी भी व्हाट्सएप/स्काइप पर पैसे ट्रांसफर करने को नहीं कहती हैं।'
+    },
+    statute: {
+      act: 'Bharatiya Nyaya Sanhita, 2023 & IT Act, 2000',
+      section: 'BNS Sec 318(4) & IT Act Sec 66D',
+      provision: 'Cheating by personation and extortion via computer resources — punishable with rigorous imprisonment up to 7 years.',
+      authority: 'National Cyber Crime Reporting Portal (cybercrime.gov.in) / Dial 1930'
+    },
+    actionItems: [
+      'DO NOT transfer any money to any account or UPI address.',
+      'Immediately terminate the video call and report the phone number to 1930.',
+      'File an official complaint on the government portal: cybercrime.gov.in.'
+    ]
+  },
+  {
+    id: 'loan',
+    type: 'Bank Loan Contract',
+    title: 'Unilateral Floating Rate & Predatory Recovery Agent Rights',
+    hindiTitle: 'बैंक लोन अनुबंध: मनमाना ब्याज दर व अनैतिक वसूली क्लॉज',
+    badge: 'Loan & Credit',
+    badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+    originalClause: 'Clause 8.3: The Lender reserves the unrestricted unilateral prerogative to revise interest rates retrospectively. In event of 1 EMI delay, Lender reserves right to contact borrower relatives, employers, and deploy field recovery associates at residence between 06:00 to 22:00 hours.',
+    riskScore: 8.5,
+    riskLevel: 'HIGH',
+    plainLanguage: {
+      en: 'The NBFC/lender is granting itself the right to raise your interest rates retroactively and harass your employer or family. This directly violates the RBI Fair Practices Code, which strictly forbids contacting third parties or using coercive recovery methods.',
+      hi: 'बैंक या लोन ऐप खुद को बिना आपकी सहमति के पिछली तारीख से ब्याज दरें बढ़ाने और आपके परिवार या कार्यस्थल पर फोन कर परेशान करने का अधिकार दे रहा है। यह आरबीआई की निष्पक्ष वसूली आचार संहिता (Fair Practices Code) का खुला उल्लंघन है।'
+    },
+    statute: {
+      act: 'RBI Fair Practices Code & SARFAESI Act',
+      section: 'RBI Circular DOR.FPC.REC.76/03.10.001',
+      provision: 'Banks and recovery agents are barred from verbal intimidation, contacting third parties, or visiting borrowers at inappropriate hours.',
+      authority: 'RBI Ombudsman (cms.rbi.org.in) / Consumer Commission'
+    },
+    actionItems: [
+      'Cite the RBI Master Direction on Recovery Agents in a formal email to the Bank Nodal Officer.',
+      'Keep call recordings of any harassment by recovery associates as statutory evidence.',
+      'Escalate to the RBI Ombudsman portal if the bank does not resolve the grievance in 30 days.'
+    ]
+  },
+  {
+    id: 'rera',
+    type: 'Builder-Buyer Agreement',
+    title: 'Unfair Possession Delay & Asymmetric Interest Penalty',
+    hindiTitle: 'बिल्डर-खरीदार एग्रीमेंट: कब्जा में देरी पर एकतरफा शर्तें',
+    badge: 'Real Estate / RERA',
+    badgeColor: 'bg-amber-100 text-amber-800 border-amber-200',
+    originalClause: 'Clause 22: If Buyer delays installment, interest at 18% p.a. compounded monthly shall be charged. If Developer delays flat handover beyond scheduled date, Developer shall pay only Rs. 5 per sq.ft. per month of super area as grace compensation.',
+    riskScore: 7.8,
+    riskLevel: 'HIGH',
+    plainLanguage: {
+      en: 'The builder charges you an aggressive 18% penalty for late payment, but pays you a measly ₹5/sq.ft. for years of delay. Under RERA Section 18, both parties MUST pay the exact same prescribed interest rate (SBI MCLR + 2%).',
+      hi: 'बिल्डर आपसे किश्त में देरी पर 18% भारी ब्याज मांग रहा है, लेकिन खुद फ्लैट देने में वर्षों की देरी करने पर केवल ₹5 प्रति वर्ग फुट की मामूली छूट दे रहा है। रेरा (RERA) कानून के अनुसार दोनों पक्षों पर समान ब्याज दर लागू होना अनिवार्य है।'
+    },
+    statute: {
+      act: 'Real Estate (Regulation and Development) Act, 2016 (RERA)',
+      section: 'Section 18 & Section 2(za)',
+      provision: 'Equal interest rate for buyer and promoter on default — Promoter liable to pay monthly interest at prescribed bank rate until physical possession.',
+      authority: 'State RERA Tribunal & MahaRERA / UP-RERA Authorities'
+    },
+    actionItems: [
+      'Do not accept token compensation; cite Section 18 of RERA 2016.',
+      'File an online complaint before your state RERA adjudicating officer.',
+      'Demand interest from the committed date of possession until actual occupancy certificate.'
+    ]
+  }
+];
+
 export const LandingPage: React.FC<LandingPageProps> = ({
   onStart,
   onSelectPreset,
@@ -39,6 +176,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   onOpenAuth,
   onLogout
 }) => {
+  const [selectedShowcaseId, setSelectedShowcaseId] = useState<string>('rent');
+  const [showcaseLang, setShowcaseLang] = useState<'en' | 'hi'>('hi');
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const activeShowcase = SHOWCASE_DOCS.find(d => d.id === selectedShowcaseId) || SHOWCASE_DOCS[0];
+
   const handleProtectedAction = (action: () => void) => {
     if (!currentUser) {
       onOpenAuth();
@@ -47,464 +190,605 @@ export const LandingPage: React.FC<LandingPageProps> = ({
     }
   };
 
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
+
+  const FAQS = [
+    {
+      q: "Can I paste documents in Hindi, Tamil, or other regional Indian languages?",
+      a: "Yes! Nyaya Lens natively supports English, Hindi (हिन्दी), Tamil (தமிழ்), Bengali, Telugu, and other Indian languages. The AI segments the native text, explains the clauses in plain language, and maps them to applicable national and state Bare Acts."
+    },
+    {
+      q: "How does Nyaya Lens identify the exact Indian statute involved?",
+      a: "Unlike generic chat models that hallucinate US laws, Nyaya Lens is trained with grounded statutory knowledge bases covering the Indian Contract Act 1872, Consumer Protection Act 2019, Model Tenancy Act 2021, RERA 2016, RBI Fair Practices Code, and Bharatiya Nyaya Sanhita (BNS) 2023."
+    },
+    {
+      q: "What should I do if a fake police or 'Digital Arrest' summons is detected?",
+      a: "Nyaya Lens immediately triggers an emergency Scam Alert Banner with the confidence score, highlights extortion indicators, and provides direct one-touch links to dial 1930 (National Cyber Crime Helpline) and file a complaint on cybercrime.gov.in."
+    },
+    {
+      q: "Is my uploaded document private and secure?",
+      a: "Completely. All user sessions are authenticated and protected under strict Indian DPDP Act 2023 standards. Documents are analyzed via secure API pipelines and are never used to train public models."
+    },
+    {
+      q: "Can I use Nyaya Lens to negotiate a fairer agreement before signing?",
+      a: "Yes! Using the 'Compare with Fair Model Clause' feature, Nyaya Lens displays a side-by-side comparison with legally balanced model clauses. You can copy fair statutory wording in one click to present to your landlord, employer, or vendor."
+    }
+  ];
+
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden text-slate-900 font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      {/* React Bits LineWaves Background */}
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-auto">
+    <div className="relative min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+      {/* Background Interactive LineWaves Canvas */}
+      <div className="absolute inset-0 z-0 opacity-30 pointer-events-auto">
         <LineWaves
-          speed={0.25}
-          innerLineCount={28}
-          outerLineCount={32}
-          warpIntensity={0.8}
-          rotation={-45}
-          edgeFadeWidth={0.15}
-          colorCycleSpeed={0.9}
-          brightness={0.7}
-          color1="#4338ca"
-          color2="#d97706"
-          color3="#059669"
+          speed={0.22}
+          innerLineCount={30}
+          outerLineCount={36}
+          warpIntensity={0.85}
+          rotation={-35}
+          edgeFadeWidth={0.18}
+          colorCycleSpeed={0.8}
+          brightness={0.85}
+          color1="#4f46e5"
+          color2="#f59e0b"
+          color3="#10b981"
           enableMouseInteraction={true}
-          mouseInfluence={2.0}
-          lightMode={true}
+          mouseInfluence={2.2}
+          lightMode={false}
         />
       </div>
 
-      {/* Subtle background gradient overlay to keep text ultra crisp */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/80 via-white/90 to-white pointer-events-none" />
+      {/* Modern Gradient Backdrop Accents */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-amber-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 left-1/3 w-[500px] h-[300px] bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Main Landing Page Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20">
+      {/* Main Container */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-24">
+        
         {/* Top Mini Brand Navigation */}
-        <div className="flex items-center justify-between pb-6 sm:pb-8 border-b border-slate-200/60 gap-2 sm:gap-4">
-          <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
-            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-amber-600 flex items-center justify-center text-white shadow-sm ring-2 ring-indigo-50 flex-shrink-0">
-              <Scale className="w-4 h-4 sm:w-5 sm:h-5" />
+        <header className="flex items-center justify-between pb-6 sm:pb-8 border-b border-slate-800/80 gap-3">
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400/30 flex-shrink-0">
+              <Scale className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="min-w-0">
-              <div className="flex items-center space-x-1.5 sm:space-x-2">
-                <span className="text-lg sm:text-xl font-bold tracking-tight text-slate-900 font-['Outfit'] truncate">
+              <div className="flex items-center space-x-2">
+                <span className="text-xl sm:text-2xl font-bold tracking-tight text-white font-['Outfit'] truncate">
                   Nyaya Lens
                 </span>
-                <span className="text-[10px] sm:text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-100 px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap">
+                <span className="text-[11px] font-extrabold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded-full whitespace-nowrap">
                   न्याय लेन्स
                 </span>
               </div>
-              <span className="text-xs text-slate-500 font-medium hidden md:inline truncate block">
+              <span className="text-xs text-slate-400 font-medium hidden md:inline truncate block">
                 AI Legal-Literacy Assistant for Indian Citizens
               </span>
             </div>
           </div>
 
-          <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
-            <span className="hidden xl:inline-flex items-center px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
-              <ShieldCheck className="w-3.5 h-3.5 mr-1 text-emerald-600" />
-              IBM Granite 3 & watsonx.governance
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+            <span className="hidden lg:inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shadow-xs">
+              <ShieldCheck className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
+              Grounded in Indian Bare Acts & watsonx
             </span>
 
             {currentUser ? (
-              <div className="flex items-center space-x-1.5 sm:space-x-2">
-                <div className="flex items-center space-x-1.5 sm:space-x-2 bg-slate-50 border border-slate-200 px-2 sm:px-3 py-1.5 rounded-xl max-w-[130px] sm:max-w-[180px]">
-                  <div className="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold text-[10px] sm:text-xs flex items-center justify-center flex-shrink-0">
+              <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl max-w-[150px] sm:max-w-[200px]">
+                  <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
                     {currentUser.name.substring(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-xs font-bold text-slate-800 truncate hidden sm:inline">{currentUser.name}</span>
+                  <span className="text-xs font-bold text-slate-200 truncate hidden sm:inline">{currentUser.name}</span>
                 </div>
                 <button
                   onClick={onStart}
-                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98 whitespace-nowrap"
+                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/30 active:scale-98"
                 >
-                  <span className="hidden xs:inline">Workspace</span>
-                  <span className="xs:hidden">App</span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>Workspace</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
                 <button
                   onClick={onLogout}
-                  className="inline-flex items-center justify-center p-1.5 sm:px-3 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-rose-700 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-all shadow-2xs"
+                  className="inline-flex items-center justify-center p-2 rounded-xl text-xs sm:text-sm font-semibold text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/50 transition-all"
                   title="Sign out of your account"
                 >
-                  <LogOut className="w-3.5 h-3.5 text-rose-600" />
-                  <span className="hidden sm:inline sm:ml-1.5">Sign Out</span>
+                  <LogOut className="w-4 h-4 text-rose-400" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-1.5 sm:space-x-2">
+              <div className="flex items-center space-x-2">
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-700 bg-white border border-slate-300 hover:border-indigo-300 transition-all shadow-2xs whitespace-nowrap"
+                  className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-all"
                 >
-                  <Lock className="w-3.5 h-3.5 text-indigo-600" />
+                  <Lock className="w-3.5 h-3.5 text-indigo-400" />
                   <span>Log In</span>
                 </button>
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-700 hover:bg-indigo-800 transition-all shadow-sm active:scale-98 whitespace-nowrap"
+                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-98"
                 >
-                  <span className="hidden sm:inline">Register Free</span>
-                  <span className="sm:hidden">Register</span>
-                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                  <span>Register Free</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             )}
           </div>
-        </div>
+        </header>
 
         {/* Hero Section */}
-        <div className="text-center pt-14 pb-12 max-w-3xl mx-auto">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-900 text-xs font-bold mb-6 shadow-xs animate-in fade-in slide-in-from-bottom-2 duration-300">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>Never sign or accept a predatory Indian legal document blindly</span>
+        <section className="pt-12 sm:pt-16 pb-12 text-center max-w-4xl mx-auto">
+          {/* Tagline Pill */}
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700/60 text-indigo-300 text-xs font-bold mb-6 shadow-sm backdrop-blur-sm">
+            <Sparkle className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span>AI Legal Literacy & Statutory Defense for Every Indian Citizen</span>
           </div>
 
-          {/* React Bits SplitFlapText Mechanical Departure Board */}
-          <div className="flex flex-col items-center justify-center mb-6 animate-in fade-in zoom-in-95 duration-500">
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-t-xl bg-gradient-to-r from-indigo-600 via-indigo-700 to-indigo-800 border border-b-0 border-indigo-500 text-[11px] uppercase font-mono tracking-wider text-amber-300 shadow-md">
+          {/* Retro SplitFlap Live Dispatcher */}
+          <div className="flex flex-col items-center justify-center mb-7">
+            <div className="inline-flex items-center space-x-2 px-4 py-1 rounded-t-xl bg-gradient-to-r from-indigo-700 via-indigo-600 to-amber-600 border border-b-0 border-indigo-500/80 text-[10px] sm:text-[11px] uppercase font-mono tracking-wider text-amber-200 shadow-md">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-0.5" />
               <span className="w-2 h-2 rounded-full bg-emerald-400 -ml-2.5" />
-              <span className="font-semibold">LIVE LEGAL MONITOR &bull; AI DISPATCH</span>
+              <span className="font-bold">LIVE STATUTORY CITATION SCANNER</span>
             </div>
-            <div className="p-3 sm:p-4 rounded-2xl bg-gradient-to-b from-indigo-950 via-slate-900 to-indigo-950 border-2 border-indigo-500/40 shadow-xl shadow-indigo-950/30 flex items-center justify-center max-w-full overflow-x-auto ring-4 ring-indigo-500/15">
+            <div className="p-3 sm:p-4 rounded-2xl bg-slate-950/90 border-2 border-indigo-500/50 shadow-2xl shadow-indigo-950/80 flex items-center justify-center max-w-full overflow-x-auto ring-4 ring-indigo-500/10 backdrop-blur-md">
               <SplitFlapText
-                words={['NYAYA LENS', 'LEGAL SHIELD', 'LAUNCH READY', 'SYNC ONLINE', 'SIGNAL LIVE', 'CITIZEN POWER']}
+                words={['NYAYA LENS', 'LEGAL SHIELD', 'BARE ACT SYNC', 'PLAIN HINDI', 'CITIZEN POWER']}
                 flipDuration={0.12}
                 stagger={0.06}
                 cycleDelay={2400}
                 charset="alphanumeric"
                 flipsPerChar={8}
-                tileColor="#1e1b4b"
+                tileColor="#0f172a"
                 textColor="#f8fafc"
                 tileRadius={8}
                 gap={6}
-                fontSize={32}
+                fontSize={30}
                 loop
                 padTo={13}
               />
             </div>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-['Outfit'] leading-tight mb-5">
-            <span className="bg-gradient-to-r from-indigo-900 via-indigo-700 to-indigo-800 bg-clip-text text-transparent">
-              Understand Every Clause.
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-['Outfit'] leading-tight mb-5">
+            <span className="text-white">
+              Paste Any Indian Legal Document.
             </span>
             <br />
-            <span className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 bg-clip-text text-transparent">
-              Defend Every Right.
+            <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-300 bg-clip-text text-transparent">
+              Know Your Rights & Exact Next Steps.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-8 font-normal">
-            Paste any Indian rental agreement, bank loan notice, police FIR, or legal summons.
-            <strong> Nyaya Lens</strong> segments each clause, scores risk on a 2-axis scale (0–10),
-            explains traps in plain Hindi or English, and cites the <em>actual Indian statute</em> protecting you.
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl mx-auto font-normal">
+            Whether it's an <strong>unfair rental lease</strong>, a <strong>threatening bank loan notice</strong>, a <strong>counterfeit police FIR</strong>, or a <strong>builder agreement</strong> — Nyaya Lens parses every clause, scores the risk, explains traps in plain Hindi/English, and cites the <em>actual Indian statute</em> protecting you.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <button
               onClick={() => handleProtectedAction(onStart)}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-7 py-3.5 rounded-xl text-sm font-bold text-white bg-indigo-700 hover:bg-indigo-800 shadow-md hover:shadow-lg transition-all active:scale-98 ring-2 ring-indigo-500/20"
+              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-8 py-3.5 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all active:scale-98 ring-2 ring-amber-400/30"
             >
-              <Lock className="w-4 h-4 text-indigo-200" />
-              <span>{currentUser ? 'Enter Legal Workspace' : 'Log In to Access Workspace'}</span>
+              <FileSearch className="w-4 h-4 text-slate-950" />
+              <span>{currentUser ? 'Open Legal Workspace' : 'Get Started — Paste Your Document'}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
+            
             {demoDocuments.length > 0 && (
               <button
                 onClick={() => handleProtectedAction(() => onSelectPreset(demoDocuments[0]))}
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-300 hover:border-slate-400 shadow-xs transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-slate-200 bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 hover:border-slate-600 shadow-sm transition-all"
               >
-                <span>Try Rental Agreement Demo</span>
+                <span>Try Sample Rental Agreement</span>
                 <ChevronRight className="w-4 h-4 text-slate-400" />
               </button>
             )}
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-500">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-slate-400 font-medium">
             <span className="flex items-center">
-              <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-600" />
-              Sign-in required for document security
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              100% Free for Citizens
             </span>
             <span className="flex items-center">
-              <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-600" />
-              English, हिन्दी, தமிழ் support
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              English, हिन्दी, தமிழ், বাংলা
             </span>
             <span className="flex items-center">
-              <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-600" />
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              Grounded in Indian Bare Acts
+            </span>
+            <span className="flex items-center">
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
               DPDP Act 2023 Compliant
             </span>
           </div>
-        </div>
+        </section>
 
-        {/* Quick Sample Presets Showcase */}
-        <div className="mb-20">
+        {/* Interactive Live Document Scanner Sandbox */}
+        <section className="mb-20">
           <div className="text-center mb-6">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-1">
-              Interactive Test Cases
+            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-1">
+              Interactive Live Demonstration
             </span>
-            <h2 className="text-xl font-bold text-slate-900 font-['Outfit']">
-              Explore Common Predatory Documents
+            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+              See How Nyaya Lens Decodes Cryptic Legalese
             </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              {currentUser ? 'Click any card to analyze in workspace' : 'Log in required to analyze full clauses'}
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl mx-auto">
+              Select an Indian document type below to see the clause segmentation, risk score, plain vernacular explanation, and exact legal remedy in action.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {demoDocuments.map((doc) => (
-              <div
+          {/* Document Selector Tabs */}
+          <div className="flex items-center justify-center gap-2 mb-6 overflow-x-auto max-w-full pb-2">
+            {SHOWCASE_DOCS.map(doc => (
+              <button
                 key={doc.id}
-                onClick={() => handleProtectedAction(() => onSelectPreset(doc))}
-                className="bg-white/95 border border-slate-200 hover:border-indigo-400 rounded-2xl p-5 cursor-pointer shadow-subtle hover:shadow-card transition-all duration-200 group flex flex-col justify-between"
+                onClick={() => setSelectedShowcaseId(doc.id)}
+                className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center space-x-2 ${
+                  selectedShowcaseId === doc.id
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-2 ring-indigo-400'
+                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-slate-700/80'
+                }`}
               >
-                <div>
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100">
-                      {doc.category}
-                    </span>
-                    <span className="text-[11px] text-slate-400">
-                      {doc.language}
-                    </span>
-                  </div>
-                  <h3 className="text-sm font-bold text-slate-900 group-hover:text-indigo-700 transition-colors mb-2">
-                    {doc.title}
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
-                    {doc.description}
-                  </p>
-                </div>
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-indigo-600">
-                  <span className="flex items-center">
-                    {!currentUser && <Lock className="w-3 h-3 mr-1 text-slate-400" />}
-                    <span>Analyze this sample</span>
-                  </span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </div>
+                <span>{doc.type}</span>
+              </button>
             ))}
           </div>
-        </div>
 
-        {/* Step-by-Step Guide: How to Use Nyaya Lens */}
-        <div className="bg-slate-50/90 border border-slate-200 rounded-3xl p-6 sm:p-10 mb-20 shadow-subtle">
+          {/* Interactive Inspection Card Container */}
+          <div className="bg-slate-950/90 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-xl">
+            <div className="flex flex-col lg:flex-row gap-6">
+              
+              {/* Left Column: Original Cryptic Legal Clause */}
+              <div className="lg:w-5/12 flex flex-col justify-between bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6">
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                      Original Legalese Document
+                    </span>
+                    <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${activeShowcase.badgeColor}`}>
+                      {activeShowcase.badge}
+                    </span>
+                  </div>
+                  
+                  <h3 className="text-base font-bold text-white mb-3">
+                    {activeShowcase.title}
+                  </h3>
+
+                  <div className="p-3.5 bg-slate-950/80 rounded-xl border border-rose-900/40 text-xs sm:text-sm font-mono text-slate-300 leading-relaxed relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
+                    {activeShowcase.originalClause}
+                  </div>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
+                  <span className="text-slate-400">Clause Risk Evaluation:</span>
+                  <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-rose-950/80 text-rose-300 border border-rose-800 font-bold">
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                    <span>Risk {activeShowcase.riskScore}/10 ({activeShowcase.riskLevel})</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Right Column: Nyaya Lens Plain Language Breakdown & Indian Statute */}
+              <div className="lg:w-7/12 flex flex-col justify-between bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-900 border border-indigo-900/50 rounded-2xl p-5 sm:p-6">
+                <div>
+                  {/* Language Toggle */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                      <Sparkles className="w-4 h-4 text-amber-400" />
+                      <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                        Plain Language Explanation
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+                      <button
+                        onClick={() => setShowcaseLang('hi')}
+                        className={`px-2.5 py-1 rounded-md transition-all font-semibold ${
+                          showcaseLang === 'hi' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        हिन्दी (Hindi)
+                      </button>
+                      <button
+                        onClick={() => setShowcaseLang('en')}
+                        className={`px-2.5 py-1 rounded-md transition-all font-semibold ${
+                          showcaseLang === 'en' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                        }`}
+                      >
+                        English
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Plain Language Box */}
+                  <div className="p-4 bg-amber-950/20 border border-amber-500/30 rounded-xl mb-4 text-xs sm:text-sm text-amber-100 leading-relaxed font-sans">
+                    <p>{activeShowcase.plainLanguage[showcaseLang]}</p>
+                  </div>
+
+                  {/* Statute Citation Pill */}
+                  <div className="p-3.5 bg-indigo-950/50 border border-indigo-600/40 rounded-xl mb-4 text-xs">
+                    <div className="flex items-center space-x-2 text-indigo-300 font-bold mb-1">
+                      <Scale className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                      <span>Grounded Indian Law: {activeShowcase.statute.act} ({activeShowcase.statute.section})</span>
+                    </div>
+                    <p className="text-slate-300 mb-2 leading-relaxed">
+                      {activeShowcase.statute.provision}
+                    </p>
+                    <div className="text-[11px] text-emerald-400 font-semibold flex items-center">
+                      <span className="text-slate-400 mr-1.5">Enforcement Authority:</span>
+                      <span>{activeShowcase.statute.authority}</span>
+                    </div>
+                  </div>
+
+                  {/* Citizen Action Checklist */}
+                  <div className="text-xs mb-4">
+                    <span className="font-bold text-white block mb-2">
+                      Citizen Action Checklist (What to Do Next):
+                    </span>
+                    <ul className="space-y-1.5">
+                      {activeShowcase.actionItems.map((item, idx) => (
+                        <li key={idx} className="flex items-start space-x-2 text-slate-300">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Trigger Full Scan CTA */}
+                <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <span className="text-[11px] text-slate-400">
+                    Want to inspect your real agreement with custom audio playback?
+                  </span>
+                  <button
+                    onClick={() => handleProtectedAction(onStart)}
+                    className="w-full sm:w-auto inline-flex items-center justify-center space-x-1.5 px-4 py-2 rounded-xl text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-sm"
+                  >
+                    <span>Scan in Workspace</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* 4 Pillars of Nyaya Lens */}
+        <section className="mb-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-1">
-              Step-by-Step Walkthrough
+            <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest block mb-1">
+              Core Capabilities
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-['Outfit']">
-              How Nyaya Lens Works in 5 Steps
+            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+              Why Indian Citizens Rely on Nyaya Lens
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-2">
-              Unlike generic chatbots that guess legal answers, Nyaya Lens performs synchronized clause segmentation and Bare Act verification.
+            <p className="text-xs sm:text-sm text-slate-400 mt-2">
+              Unlike generic US-centric legal chatbots, Nyaya Lens is engineered specifically for Indian law, Indian languages, and Indian consumer realities.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 sm:gap-6">
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm mb-3">
-                1
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="bg-slate-950/70 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
+              <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-700/40 text-indigo-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <FileText className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">
-                Document Ingestion
+              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+                1. Any Document, Any Language
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Paste any legal agreement or upload PDF/TXT/OCR images in English, Hindi, or regional languages.
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Paste raw agreements or upload notices in Hindi, English, Tamil, or regional scripts. IBM Granite parses the full text without losing legal context.
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm mb-3">
-                2
+            <div className="bg-slate-950/70 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
+              <div className="w-12 h-12 rounded-xl bg-amber-950/80 border border-amber-700/40 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Volume2 className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">
-                Clause Segmentation
+              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+                2. Plain Vernacular & Voice
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                IBM Granite parses the document into distinct clauses (Security Deposit, Inspection, Recovery, Penalty).
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Translates convoluted Latin terms and confusing clauses into crystal-clear everyday language. Includes high-fidelity audio readouts for low-literacy citizens.
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm mb-3">
-                3
+            <div className="bg-slate-950/70 border border-slate-800 hover:border-rose-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
+              <div className="w-12 h-12 rounded-xl bg-rose-950/80 border border-rose-700/40 text-rose-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <ShieldAlert className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">
-                2-Axis Risk Scoring
+              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+                3. 2-Axis Risk Scoring (0–10)
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Each clause receives a Risk Score (0–10) and an AI Confidence Score based on Indian legal enforceability.
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Measures clause risk severity alongside AI model confidence. Flags illegal forfeiture, unilateral penalty escalation, and scam arrest patterns instantly.
               </p>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm mb-3">
-                4
+            <div className="bg-slate-950/70 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
+              <div className="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-700/40 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+                <Gavel className="w-6 h-6" />
               </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">
-                Statute Citations
+              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+                4. Real Statute Citations
               </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Explains traps in plain Hindi/English and cites actual Bare Acts (Contract Act Sec 74, CPA 2019, RERA).
-              </p>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative">
-              <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-800 font-bold flex items-center justify-center text-sm mb-3">
-                5
-              </div>
-              <h3 className="text-sm font-bold text-slate-900 mb-1">
-                Actionable Defense
-              </h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Download a custom defense checklist with direct links to National Consumer Helpline, RERA, and Cyber 1930.
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Every risk flag is grounded in Section numbers from the Indian Contract Act, CPA 2019, RERA, Model Tenancy Act, and RBI Master Directions.
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Feature Cards Grid */}
-        <div className="mb-20">
+        {/* Indian Statutory Grounding Ticker */}
+        <section className="border border-slate-800 bg-slate-950/80 rounded-2xl p-6 sm:p-8 mb-20 shadow-lg">
+          <div className="flex items-center space-x-2.5 mb-5">
+            <Scale className="w-5 h-5 text-indigo-400" />
+            <h3 className="text-base font-bold text-white font-['Outfit']">
+              Pre-Loaded Indian Statute Knowledge Base
+            </h3>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold text-slate-300">
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              Contract Act 1872 (Sec 74)
+            </div>
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              Consumer Protection 2019
+            </div>
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              Model Tenancy Act 2021
+            </div>
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              RBI Fair Practices Code
+            </div>
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              IT Act 2000 (Sec 66D)
+            </div>
+            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
+              Bharatiya Nyaya Sanhita 2023
+            </div>
+          </div>
+        </section>
+
+        {/* Real-World Citizen Defense Stories */}
+        <section className="mb-20">
           <div className="text-center max-w-xl mx-auto mb-10">
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-1">
-              Built for Impact
+            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-1">
+              Empowering Citizens
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 font-['Outfit']">
-              Every Feature Designed for the Common Citizen
+            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+              How Citizens Defend Their Rights
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-4">
-                <Sparkles className="w-5 h-5" />
+            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold mb-3">
+                <Check className="w-4 h-4" />
+                <span>SAVED ₹75,000 DEPOSIT</span>
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                "What Would Happen to Me" Simulator
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Ask scenarios like *"What if I break my lease early?"* or *"Can recovery agents call my boss?"*. AI explains the counterparty threat vs statutory reality.
+              <h4 className="text-sm font-bold text-white mb-2">
+                "Landlord dropped the unfair 11-month forfeit"
+              </h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                "When moving cities, my Bengaluru landlord cited a lock-in clause to seize 2 months deposit. I showed the Nyaya Lens Section 74 citation and the landlord immediately agreed to a standard 1-month notice."
               </p>
+              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+                — Ramesh K., Software Engineer, Bengaluru
+              </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4">
-                <BookOpen className="w-5 h-5" />
+            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold mb-3">
+                <ShieldAlert className="w-4 h-4" />
+                <span>AVOIDED ₹2 LAKH SCAM</span>
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                Side-by-Side Fair Model Diff
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Compare predatory clauses against standard model clauses from the Model Tenancy Act 2021. Copy fair phrasing in one click to renegotiate.
+              <h4 className="text-sm font-bold text-white mb-2">
+                "Spotted a fake CBI arrest order in seconds"
+              </h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                "I received an official-looking police letter threatening digital arrest for courier drugs. Pasted it into Nyaya Lens, and it lit up with a 10/10 scam alert, guiding me straight to dial 1930 instead of paying."
               </p>
+              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+                — Sunita V., Homemaker, Delhi NCR
+              </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center mb-4">
-                <ShieldAlert className="w-5 h-5" />
+            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
+              <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold mb-3">
+                <Gavel className="w-4 h-4" />
+                <span>RECOVERY HARASSMENT STOPPED</span>
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                Scam & Digital Arrest Red-Flag Detector
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Flags counterfeit police notices, digital arrest threats, and extortion UPI links. Alerts you immediately with 1930 Cyber Helpline guidance.
+              <h4 className="text-sm font-bold text-white mb-2">
+                "Stopped illegal late-night recovery calls"
+              </h4>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                "A loan app was calling my workplace. Nyaya Lens gave me the exact RBI Fair Practices Code circular. Once I emailed the bank nodal officer with that citation, all third-party calls ceased within 24 hours."
               </p>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-4">
-                <Volume2 className="w-5 h-5" />
+              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+                — Amit P., Small Business Owner, Pune
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                Voice Readout for Low-Literacy Users
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Accessibility matters. Users can click "बोलकर सुनाएं" to listen to clause explanations and risks read aloud in Hindi or Indian English.
-              </p>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-4">
-                <History className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                Dispute Escalation Timeline
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Tracks notice cycles, statutory 30-day cure windows, inspection handover memos, and court filing deadlines so you never miss a legal date.
-              </p>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-card transition-shadow">
-              <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center mb-4">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2 font-['Outfit']">
-                watsonx.governance Verifiable Audit
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Logs every inference hash, cited Bare Act section, and hallucination guardrail check into a transparent, verifiable compliance registry.
-              </p>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Indian Statutory Grounding Banner */}
-        <div className="border border-slate-200 bg-white/90 rounded-2xl p-6 sm:p-8 mb-16 shadow-subtle">
-          <div className="flex items-center space-x-2 mb-4">
-            <Scale className="w-5 h-5 text-indigo-700" />
-            <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
-              Pre-Loaded Indian Statute Knowledge Base
-            </h3>
+        {/* Frequently Asked Questions Accordion */}
+        <section className="mb-20 max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest block mb-1">
+              Common Questions
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+              Frequently Asked Questions
+            </h2>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs font-semibold text-slate-700">
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              Contract Act 1872
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              Consumer Protection 2019
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              Model Tenancy Act 2021
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              RBI Fair Practices Code
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              IT Act 2000 (Sec 66D)
-            </div>
-            <div className="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-center">
-              BNS 2023 (Sec 351)
-            </div>
+
+          <div className="space-y-3">
+            {FAQS.map((faq, idx) => (
+              <div
+                key={idx}
+                className="bg-slate-950/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
+              >
+                <button
+                  onClick={() => toggleFaq(idx)}
+                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left text-sm font-bold text-white hover:text-indigo-300 transition-colors"
+                >
+                  <span className="pr-4">{faq.q}</span>
+                  {openFaqIndex === idx ? (
+                    <ChevronUp className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                  )}
+                </button>
+                {openFaqIndex === idx && (
+                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/80 pt-3">
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        </div>
+        </section>
 
         {/* Bottom Call to Action Banner */}
-        <div className="bg-gradient-to-r from-indigo-700 via-indigo-800 to-amber-600 rounded-3xl p-8 sm:p-12 text-white text-center shadow-lg">
-          <h2 className="text-2xl sm:text-3xl font-bold font-['Outfit'] mb-3">
-            Ready to Protect Yourself Against Predatory Clauses?
-          </h2>
-          <p className="text-xs sm:text-sm text-indigo-100 max-w-xl mx-auto mb-6">
-            Free for all Indian citizens. Test any tenancy lease, loan agreement, or bank notice in under 10 seconds.
-          </p>
-          <button
-            onClick={() => handleProtectedAction(onStart)}
-            className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl text-sm font-bold text-indigo-900 bg-white hover:bg-slate-100 transition-all shadow-md active:scale-98"
-          >
-            <Lock className="w-4 h-4 text-indigo-700" />
-            <span>{currentUser ? 'Open Nyaya Lens Workspace' : 'Sign In to Open Workspace'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
-        </div>
+        <section className="bg-gradient-to-r from-indigo-700 via-indigo-800 to-amber-600 rounded-3xl p-8 sm:p-12 text-white text-center shadow-2xl relative overflow-hidden">
+          <div className="relative z-10 max-w-2xl mx-auto">
+            <h2 className="text-2xl sm:text-4xl font-extrabold font-['Outfit'] mb-3">
+              Never Sign a Legal Document Blindly Again.
+            </h2>
+            <p className="text-xs sm:text-sm text-indigo-100 mb-6 leading-relaxed">
+              Join thousands of Indian citizens protecting their deposits, savings, and peace of mind with IBM Granite AI and Indian statutory verification.
+            </p>
+            <button
+              onClick={() => handleProtectedAction(onStart)}
+              className="inline-flex items-center space-x-2 px-8 py-3.5 rounded-xl text-sm font-bold text-slate-950 bg-white hover:bg-slate-100 transition-all shadow-lg active:scale-98"
+            >
+              <FileSearch className="w-4 h-4 text-indigo-700" />
+              <span>{currentUser ? 'Enter Workspace & Scan' : 'Register Free & Analyze Document'}</span>
+              <ArrowRight className="w-4 h-4 text-slate-950" />
+            </button>
+          </div>
+        </section>
 
-        {/* Footer */}
-        <div className="mt-14 pt-6 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
+        {/* Footer with Government Helplines */}
+        <footer className="mt-14 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
           <div>
-            © 2026 Nyaya Lens (न्याय लेन्स) — Built with IBM Granite 3 & watsonx.ai.
+            © 2026 Nyaya Lens (न्याय लेन्स) — Powered by IBM Granite 3 & watsonx.governance.
           </div>
           <div className="flex items-center space-x-4">
-            <span>Consumer Helpline: <strong>1915</strong></span>
-            <span>Cybercrime: <strong>1930</strong></span>
-            <span>NALSA Legal Aid: <strong>15100</strong></span>
+            <span>National Consumer Helpline: <strong className="text-white">1915</strong></span>
+            <span>Cybercrime: <strong className="text-white">1930</strong></span>
+            <span>NALSA Legal Aid: <strong className="text-white">15100</strong></span>
           </div>
-        </div>
+        </footer>
+
       </div>
     </div>
   );
 };
+
