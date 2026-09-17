@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+const MongoUser = mongoose.model('User', userSchema);
 let isMongoConnected = false;
 let mongoError = null;
 
