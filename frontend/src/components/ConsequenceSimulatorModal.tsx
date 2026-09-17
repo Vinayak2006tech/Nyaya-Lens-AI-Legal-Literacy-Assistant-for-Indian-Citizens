@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Sparkles, Send, ShieldCheck, AlertCircle, Scale, CheckCircle2, ArrowRight } from 'lucide-react';
 import { ConsequenceResponse } from '../types';
+import { apiUrl, parseResponseJson } from '../config/api';
 
 interface ConsequenceSimulatorModalProps {
   isOpen: boolean;
@@ -37,7 +38,7 @@ export const ConsequenceSimulatorModal: React.FC<ConsequenceSimulatorModalProps>
 
     try {
       const token = localStorage.getItem('nyaya_token');
-      const response = await fetch('/api/simulate-consequence', {
+      const response = await fetch(apiUrl('/api/simulate-consequence'), {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -49,7 +50,7 @@ export const ConsequenceSimulatorModal: React.FC<ConsequenceSimulatorModalProps>
           language: currentLanguage
         })
       });
-      const data = await response.json();
+      const data = await parseResponseJson(response);
       setResult(data);
     } catch (err) {
       console.error('Simulation failed:', err);

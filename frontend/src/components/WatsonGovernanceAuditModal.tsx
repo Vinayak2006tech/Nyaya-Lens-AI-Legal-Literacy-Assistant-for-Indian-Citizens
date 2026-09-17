@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { X, ShieldCheck, CheckCircle2, Lock, Cpu, Database, Award, ExternalLink } from 'lucide-react';
 import { GovernanceAuditRecord } from '../types';
+import { apiUrl, parseResponseJson } from '../config/api';
 
 interface WatsonGovernanceAuditModalProps {
   isOpen: boolean;
@@ -20,10 +21,10 @@ export const WatsonGovernanceAuditModal: React.FC<WatsonGovernanceAuditModalProp
     if (isOpen) {
       setLoading(true);
       const token = localStorage.getItem('nyaya_token');
-      fetch('/api/governance-audit', {
+      fetch(apiUrl('/api/governance-audit'), {
         headers: token ? { 'Authorization': `Bearer ${token}` } : {}
       })
-        .then(res => res.json())
+        .then(res => parseResponseJson(res))
         .then(data => {
           setAudits(data.recent_audits || []);
           setLoading(false);

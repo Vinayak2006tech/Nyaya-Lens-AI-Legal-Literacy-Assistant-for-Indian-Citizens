@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { UploadCloud, FileText, Volume2, VolumeX, Sparkles, RefreshCw, Copy, Check, Info } from 'lucide-react';
 import { ClauseEvaluation } from '../types';
+import { apiUrl, parseResponseJson } from '../config/api';
 
 interface DocumentPaneProps {
   documentText: string;
@@ -45,12 +46,12 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
       formData.append('file', file);
       try {
         const token = localStorage.getItem('nyaya_token');
-        const response = await fetch('/api/upload-document', {
+        const response = await fetch(apiUrl('/api/upload-document'), {
           method: 'POST',
           headers: token ? { 'Authorization': `Bearer ${token}` } : {},
           body: formData
         });
-        const data = await response.json();
+        const data = await parseResponseJson(response);
         if (data.text) {
           onTextChange(data.text);
           setViewMode('editor');

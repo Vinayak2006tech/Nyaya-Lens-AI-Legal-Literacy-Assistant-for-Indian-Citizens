@@ -17,6 +17,7 @@ import {
   DemoDocument,
   UserProfile 
 } from './types';
+import { apiUrl, parseResponseJson } from './config/api';
 
 export const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<'landing' | 'workspace'>('landing');
@@ -50,7 +51,7 @@ export const App: React.FC = () => {
         setAuthToken(savedToken);
 
         // Verify token validity with backend
-        fetch('/api/auth/me', {
+        fetch(apiUrl('/api/auth/me'), {
           headers: { 'Authorization': `Bearer ${savedToken}` }
         })
         .then(res => {
@@ -69,8 +70,8 @@ export const App: React.FC = () => {
     }
 
     // Fetch demo documents
-    fetch('/api/demo-documents')
-      .then(res => res.json())
+    fetch(apiUrl('/api/demo-documents'))
+      .then(res => parseResponseJson<DemoDocument[]>(res))
       .then((data: DemoDocument[]) => {
         if (Array.isArray(data) && data.length > 0) {
           setDemoDocuments(data);
@@ -129,7 +130,7 @@ export const App: React.FC = () => {
     setActiveClauseId(null);
 
     try {
-      const response = await fetch('/api/analyze-document', {
+      const response = await fetch(apiUrl('/api/analyze-document'), {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -147,7 +148,7 @@ export const App: React.FC = () => {
         return;
       }
 
-      const result: DocumentAnalysisResult = await response.json();
+      const result: DocumentAnalysisResult = await parseResponseJson<DocumentAnalysisResult>(response);
       setAnalysisResult(result);
 
       try {

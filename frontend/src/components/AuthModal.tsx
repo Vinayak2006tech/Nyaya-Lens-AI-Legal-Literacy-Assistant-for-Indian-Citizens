@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, Lock, Mail, User, ArrowRight, AlertCircle } from 'lucide-react';
 import { UserProfile } from '../types';
+import { apiUrl, parseResponseJson } from '../config/api';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -30,7 +31,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setError(null);
     setIsLoading(true);
 
-    const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
+    const endpoint = apiUrl(mode === 'login' ? '/api/auth/login' : '/api/auth/register');
     const payload = mode === 'login' 
       ? { email, password }
       : { name, email, password, role };
@@ -42,10 +43,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         body: JSON.stringify(payload)
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || 'Authentication failed. Please check credentials.');
-      }
+      const data = await parseResponseJson(res);
 
       localStorage.setItem('nyaya_token', data.token);
       localStorage.setItem('nyaya_user', JSON.stringify(data.user));
