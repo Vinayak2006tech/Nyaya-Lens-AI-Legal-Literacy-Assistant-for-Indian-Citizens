@@ -1,0 +1,38 @@
+[
+  {
+    "id": "usr-demo-001",
+    "name": "Ananya Verma",
+    "email": "ananya.verma@example.in",
+    "role": "Citizen / Tenant",
+    "salt": "f8567c24fd8f17c09de180eb18005130",
+    "passwordHash": "188026fc0098108589faba6ed9e9ad2ce7f6088c019dde725cb122ba1c7cfd3a6ab289bdcdd55942b79084a564dc018faebee48758584dbb207ac1d0fa079e76",
+    "createdAt": "2026-09-17T10:43:58.905Z"
+  },
+  {
+    "id": "usr-1789642095327",
+    "name": "Vinayak Vaishy",
+    "email": "vaishayvinayak@gmail.com",
+    "role": "Legal Aid Student",
+    "salt": "415fe97a4d6b04aa13e8dd883167af80",
+    "passwordHash": "247010f9403fe2732746f9972fdecf97955eb623ebdffcb3b15c1a4de2b24012b918a45c916fa0bff32d898ba8a1193431f5f8136f0fe39b0c65175d032ddcf8",
+    "createdAt": "2026-09-17T10:48:15.328Z"
+  },
+  {
+    "id": "usr-1789643478669",
+    "name": "Rohan Sharma",
+    "email": "rohan.sharma@example.in",
+    "role": "Citizen / Tenant",
+    "salt": "5137ae40122dae282ae4c61371a2d794",
+    "passwordHash": "b26506c652c864ad2cb9e09bc1f93b3251654d18e264335fcea5241112429fa020c88133da67cc998e2a9f357a11c6d12bc0c0a3211f06aa7eb087b89fb0de72",
+    "createdAt": "2026-09-17T11:11:18.670Z"
+  },
+  {
+    "id": "usr-1789644854534",
+    "name": "Aarav Patel",
+    "email": "aarav.patel@test.in",
+    "role": "Borrower / Consumer",
+    "salt": "bd5dd16ef09faf74f1522d721a1fdff6",
+    "passwordHash": "869a9426d3e95552f0ec69d0ddaa5e3b75ad61a89901006ba82d9ead0dd7e3c416eea8ab8df01734eeb088ec4b5f4b8034bbef46c75d912ebb708640120a628d",
+    "createdAt": "2026-09-17T11:34:14.536Z"
+  }
+]

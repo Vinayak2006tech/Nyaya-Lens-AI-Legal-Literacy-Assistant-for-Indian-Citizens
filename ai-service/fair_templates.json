@@ -1,0 +1,56 @@
+{
+  "templates": [
+    {
+      "clause_type": "security_deposit",
+      "predatory_pattern": "forfeiture of entire deposit / 10 months deposit",
+      "fair_title": "Standard Model Clause (Model Tenancy Act 2021 / Section 13)",
+      "fair_text": "The Tenant shall deposit a refundable security deposit equivalent to maximum 2 (two) months' rent. The deposit shall be refunded in full by the Landlord within 30 days of the Tenant handing over vacant possession, subject only to deductions for unpaid rent or verifiable structural damage caused by the Tenant (excluding normal wear and tear). In case of early termination, deductions shall strictly equal actual unpaid rent during the 30-day notice period.",
+      "key_differences": [
+        "Caps deposit to 2 months rent instead of 10 months",
+        "Replaces unconditional 100% forfeiture with fair 30-day notice accounting",
+        "Excludes normal wear and tear deductions",
+        "Mandates return within 30 days"
+      ],
+      "law_reference": "Model Tenancy Act 2021, Section 13; Indian Contract Act 1872, Section 74"
+    },
+    {
+      "clause_type": "landlord_entry",
+      "predatory_pattern": "unannounced inspection at any hour with master key",
+      "fair_title": "Standard Fair Access Clause (Model Tenancy Act 2021 / Section 15)",
+      "fair_text": "The Landlord or their authorized agent may inspect the demised premises only after giving at least 24 (twenty-four) hours prior written notice (via email or SMS/WhatsApp) to the Tenant. Such entry shall occur only between 7:00 AM and 8:00 PM on working days, in the presence of the Tenant or their authorized representative.",
+      "key_differences": [
+        "Requires 24-hour mandatory advance written notice",
+        "Restricts entry hours between 7:00 AM and 8:00 PM only",
+        "Explicitly disallows master-key surprise entries or night access",
+        "Protects citizen's fundamental right to domestic privacy"
+      ],
+      "law_reference": "Model Tenancy Act 2021, Section 15; Right to Privacy (K.S. Puttaswamy v. Union of India)"
+    },
+    {
+      "clause_type": "debt_recovery",
+      "predatory_pattern": "threat of arrest / contacting phone contacts / night calls",
+      "fair_title": "Standard Debt Recovery Clause (RBI Fair Practices Code for NBFCs)",
+      "fair_text": "In the event of default, the Lender shall issue a formal written demand notice allowing a minimum of 15 days cure period. Recovery procedures shall strictly adhere to RBI Fair Practices Code: recovery personnel may contact only the borrower during designated hours (8:00 AM to 7:00 PM), shall never harass relatives or third parties, and shall never make false representations regarding police warrants or criminal sanctions for civil default.",
+      "key_differences": [
+        "Prohibits contacting family, employer, or scraping phonebook",
+        "Restricts calls to 8:00 AM to 7:00 PM only",
+        "Replaces criminal arrest threats with legitimate civil demand notices",
+        "Allows a statutory 15-day cure period before dispute escalation"
+      ],
+      "law_reference": "RBI Master Direction DNBR.PD.008/03.10.119/2016-17; BNS 2023 Sec 351"
+    },
+    {
+      "clause_type": "dispute_jurisdiction",
+      "predatory_pattern": "arbitration in Singapore / foreign seat / court waiver",
+      "fair_title": "Fair Jurisdiction Clause (Section 28 Indian Contract Act)",
+      "fair_text": "Any dispute arising under this agreement shall be subject to the exclusive jurisdiction of the civil courts and Rent Controller having jurisdiction over the local municipal area where the property is situated. Nothing in this agreement shall bar either party from filing grievances before the District Consumer Disputes Redressal Commission.",
+      "key_differences": [
+        "Jurisdiction is local to where the property/citizen resides",
+        "Cannot force tenant to travel to distant cities or foreign countries for arbitration",
+        "Preserves statutory right to approach consumer court or Rent Authority",
+        "Prevents unconscionable legal expense bullying"
+      ],
+      "law_reference": "Indian Contract Act 1872, Section 28; Consumer Protection Act 2019, Section 100"
+    }
+  ]
+}
