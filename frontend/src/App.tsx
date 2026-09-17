@@ -42,6 +42,20 @@ export const App: React.FC = () => {
   const [isChecklistOpen, setIsChecklistOpen] = useState(false);
   const [selectedFairClause, setSelectedFairClause] = useState<ClauseEvaluation | null>(null);
 
+  // Dark mode state for workspace
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const saved = localStorage.getItem('nyaya_theme');
+    return saved ? saved === 'dark' : true;
+  });
+
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(prev => {
+      const next = !prev;
+      localStorage.setItem('nyaya_theme', next ? 'dark' : 'light');
+      return next;
+    });
+  };
+
   // Initialize Auth & Demo Documents on load
   useEffect(() => {
     const savedToken = localStorage.getItem('nyaya_token');
@@ -206,9 +220,15 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-hidden">
+    <div className={`relative min-h-screen flex flex-col font-sans transition-colors duration-200 overflow-hidden ${
+      isDarkMode 
+        ? 'bg-slate-950 text-slate-100 selection:bg-indigo-900 selection:text-indigo-100' 
+        : 'bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-900'
+    }`}>
       {/* Background Interactive LineWaves Canvas for Workplace */}
-      <div className="absolute inset-0 z-0 opacity-40 pointer-events-auto">
+      <div className={`absolute inset-0 z-0 pointer-events-auto transition-opacity duration-300 ${
+        isDarkMode ? 'opacity-35' : 'opacity-40'
+      }`}>
         <LineWaves
           speed={0.2}
           innerLineCount={28}
@@ -217,18 +237,22 @@ export const App: React.FC = () => {
           rotation={-38}
           edgeFadeWidth={0.16}
           colorCycleSpeed={0.85}
-          brightness={0.75}
+          brightness={isDarkMode ? 0.9 : 0.75}
           color1="#4338ca"
           color2="#d97706"
           color3="#059669"
           enableMouseInteraction={true}
           mouseInfluence={2.0}
-          lightMode={true}
+          lightMode={!isDarkMode}
         />
       </div>
 
       {/* Subtle background gradient overlay to keep document editor & analysis ultra crisp */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/70 via-slate-50/80 to-slate-100/90 pointer-events-none" />
+      <div className={`absolute inset-0 z-0 pointer-events-none transition-colors duration-300 ${
+        isDarkMode 
+          ? 'bg-gradient-to-b from-slate-950/75 via-slate-950/85 to-slate-950/95' 
+          : 'bg-gradient-to-b from-white/70 via-slate-50/80 to-slate-100/90'
+      }`} />
 
       {/* Foreground Workspace Content */}
       <div className="relative z-10 flex flex-col flex-1">
@@ -247,45 +271,49 @@ export const App: React.FC = () => {
           currentUser={currentUser}
           onOpenAuth={() => setIsAuthModalOpen(true)}
           onLogout={handleLogout}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={handleToggleDarkMode}
         />
 
         {/* Main Container */}
         <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-5">
           {/* Scam Alert Banner if triggered */}
           {analysisResult?.scam_assessment && (
-            <ScamAlertBanner scam={analysisResult.scam_assessment} />
+            <ScamAlertBanner scam={analysisResult.scam_assessment} isDarkMode={isDarkMode} />
           )}
 
           {/* Mobile View Segmented Switcher (< lg screens) */}
-          <div className="lg:hidden flex items-center p-1 bg-slate-200/90 rounded-xl mb-3.5 text-xs font-semibold shadow-inner">
+          <div className={`lg:hidden flex items-center p-1 rounded-xl mb-3.5 text-xs font-semibold shadow-inner border transition-colors ${
+            isDarkMode ? 'bg-slate-800/90 border-slate-700/80' : 'bg-slate-200/90 border-slate-300/60'
+          }`}>
           <button
             onClick={() => setMobileTab('document')}
             className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all ${
               mobileTab === 'document'
-                ? 'bg-white text-indigo-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? isDarkMode ? 'bg-slate-900 text-indigo-300 shadow-sm' : 'bg-white text-indigo-900 shadow-sm'
+                : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <FileText className="w-4 h-4 text-indigo-600" />
+            <FileText className="w-4 h-4 text-indigo-500" />
             <span>Document (दस्तावेज़)</span>
           </button>
           <button
             onClick={() => setMobileTab('analysis')}
             className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all relative ${
               mobileTab === 'analysis'
-                ? 'bg-white text-indigo-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? isDarkMode ? 'bg-slate-900 text-indigo-300 shadow-sm' : 'bg-white text-indigo-900 shadow-sm'
+                : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <ShieldCheck className="w-4 h-4 text-indigo-600" />
+            <ShieldCheck className="w-4 h-4 text-indigo-500" />
             <span>Risk Analysis (विश्लेषण)</span>
             {analysisResult && (
               <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
                 analysisResult.overall_risk_score >= 6.5
-                  ? 'bg-rose-100 text-rose-700'
+                  ? isDarkMode ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-rose-100 text-rose-700'
                   : analysisResult.overall_risk_score >= 3.5
-                  ? 'bg-amber-100 text-amber-700'
-                  : 'bg-emerald-100 text-emerald-700'
+                  ? isDarkMode ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-amber-100 text-amber-700'
+                  : isDarkMode ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-emerald-100 text-emerald-700'
               }`}>
                 {analysisResult.overall_risk_score}/10
               </span>
@@ -311,6 +339,7 @@ export const App: React.FC = () => {
                 }
               }}
               currentLanguage={currentLanguage}
+              isDarkMode={isDarkMode}
             />
           </div>
 
@@ -323,6 +352,7 @@ export const App: React.FC = () => {
               onSelectClause={handleSelectClause}
               onOpenFairClause={(clause) => setSelectedFairClause(clause)}
               currentLanguage={currentLanguage}
+              isDarkMode={isDarkMode}
             />
           </div>
         </div>
@@ -338,6 +368,7 @@ export const App: React.FC = () => {
       <FairClauseModal
         clause={selectedFairClause}
         onClose={() => setSelectedFairClause(null)}
+        isDarkMode={isDarkMode}
       />
 
       <WatsonGovernanceAuditModal
