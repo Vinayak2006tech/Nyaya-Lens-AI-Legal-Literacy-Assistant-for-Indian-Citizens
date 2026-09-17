@@ -23,7 +23,9 @@ import {
   ChevronDown,
   ChevronUp,
   FileSearch,
-  Sparkle
+  Sparkle,
+  Sun,
+  Moon
 } from 'lucide-react';
 import LineWaves from './LineWaves';
 import SplitFlapText from './SplitFlapText';
@@ -36,6 +38,8 @@ interface LandingPageProps {
   currentUser: UserProfile | null;
   onOpenAuth: () => void;
   onLogout: () => void;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
 interface ShowcaseDoc {
@@ -174,7 +178,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   demoDocuments,
   currentUser,
   onOpenAuth,
-  onLogout
+  onLogout,
+  isDarkMode = true,
+  onToggleDarkMode
 }) => {
   const [selectedShowcaseId, setSelectedShowcaseId] = useState<string>('rent');
   const [showcaseLang, setShowcaseLang] = useState<'en' | 'hi'>('hi');
@@ -218,9 +224,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-900 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className={`relative min-h-screen font-sans transition-colors duration-200 overflow-hidden ${
+      isDarkMode 
+        ? 'bg-slate-950 text-slate-100 selection:bg-indigo-900 selection:text-indigo-100' 
+        : 'bg-slate-50 text-slate-900 selection:bg-indigo-100 selection:text-indigo-900'
+    }`}>
       {/* Background Interactive LineWaves Canvas */}
-      <div className="absolute inset-0 z-0 opacity-30 pointer-events-auto">
+      <div className={`absolute inset-0 z-0 pointer-events-auto transition-opacity duration-300 ${
+        isDarkMode ? 'opacity-30' : 'opacity-40'
+      }`}>
         <LineWaves
           speed={0.22}
           innerLineCount={30}
@@ -229,58 +241,92 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           rotation={-35}
           edgeFadeWidth={0.18}
           colorCycleSpeed={0.8}
-          brightness={0.85}
+          brightness={isDarkMode ? 0.85 : 0.7}
           color1="#4f46e5"
-          color2="#f59e0b"
-          color3="#10b981"
+          color2="#d97706"
+          color3="#059669"
           enableMouseInteraction={true}
           mouseInfluence={2.2}
-          lightMode={false}
+          lightMode={!isDarkMode}
         />
       </div>
 
       {/* Modern Gradient Backdrop Accents */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-96 h-96 bg-amber-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 left-1/3 w-[500px] h-[300px] bg-emerald-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className={`absolute top-0 left-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none transition-colors ${
+        isDarkMode ? 'bg-indigo-600/20' : 'bg-indigo-200/40'
+      }`} />
+      <div className={`absolute top-1/3 right-1/4 w-96 h-96 rounded-full blur-3xl pointer-events-none transition-colors ${
+        isDarkMode ? 'bg-amber-600/15' : 'bg-amber-200/35'
+      }`} />
+      <div className={`absolute bottom-10 left-1/3 w-[500px] h-[300px] rounded-full blur-3xl pointer-events-none transition-colors ${
+        isDarkMode ? 'bg-emerald-600/15' : 'bg-emerald-200/35'
+      }`} />
 
       {/* Main Container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-24">
         
         {/* Top Mini Brand Navigation */}
-        <header className="flex items-center justify-between pb-6 sm:pb-8 border-b border-slate-800/80 gap-3">
+        <header className={`flex items-center justify-between pb-6 sm:pb-8 border-b gap-3 transition-colors ${
+          isDarkMode ? 'border-slate-800/80' : 'border-slate-200'
+        }`}>
           <div className="flex items-center space-x-3 min-w-0">
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400/30 flex-shrink-0">
               <Scale className="w-5 h-5 sm:w-6 sm:h-6" />
             </div>
             <div className="min-w-0">
               <div className="flex items-center space-x-2">
-                <span className="text-xl sm:text-2xl font-bold tracking-tight text-white font-['Outfit'] truncate">
+                <span className={`text-xl sm:text-2xl font-bold tracking-tight font-['Outfit'] truncate ${
+                  isDarkMode ? 'text-white' : 'text-slate-900'
+                }`}>
                   Nyaya Lens
                 </span>
-                <span className="text-[11px] font-extrabold text-amber-400 bg-amber-400/10 border border-amber-400/30 px-2 py-0.5 rounded-full whitespace-nowrap">
+                <span className="text-[11px] font-extrabold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full whitespace-nowrap">
                   न्याय लेन्स
                 </span>
               </div>
-              <span className="text-xs text-slate-400 font-medium hidden md:inline truncate block">
+              <span className={`text-xs font-medium hidden md:inline truncate block ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-500'
+              }`}>
                 AI Legal-Literacy Assistant for Indian Citizens
               </span>
             </div>
           </div>
 
           <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
-            <span className="hidden lg:inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full bg-emerald-950/80 text-emerald-300 border border-emerald-700/60 shadow-xs">
-              <ShieldCheck className="w-3.5 h-3.5 mr-1.5 text-emerald-400" />
+            <span className={`hidden lg:inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border shadow-xs ${
+              isDarkMode 
+                ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60' 
+                : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+            }`}>
+              <ShieldCheck className="w-3.5 h-3.5 mr-1.5 text-emerald-500" />
               Grounded in Indian Bare Acts & watsonx
             </span>
 
+            {/* Sun / Moon Theme Toggle */}
+            {onToggleDarkMode && (
+              <button
+                onClick={onToggleDarkMode}
+                className={`p-2 rounded-xl border transition-all flex items-center justify-center ${
+                  isDarkMode 
+                    ? 'bg-slate-800/80 border-slate-700 text-amber-400 hover:text-amber-300 hover:bg-slate-700/80' 
+                    : 'bg-white border-slate-300 text-slate-700 hover:text-indigo-600 hover:bg-slate-100 shadow-xs'
+                }`}
+                title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                aria-label="Toggle Theme"
+              >
+                {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              </button>
+            )}
+
             {currentUser ? (
               <div className="flex items-center space-x-2">
-                <div className="flex items-center space-x-2 bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-xl max-w-[150px] sm:max-w-[200px]">
+                <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl max-w-[150px] sm:max-w-[200px] border ${
+                  isDarkMode ? 'bg-slate-800/80 border-slate-700 text-slate-200' : 'bg-slate-100 border-slate-200 text-slate-800'
+                }`}>
                   <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
                     {currentUser.name.substring(0, 2).toUpperCase()}
                   </div>
-                  <span className="text-xs font-bold text-slate-200 truncate hidden sm:inline">{currentUser.name}</span>
+                  <span className="text-xs font-bold truncate hidden sm:inline">{currentUser.name}</span>
                 </div>
                 <button
                   onClick={onStart}
@@ -291,24 +337,32 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </button>
                 <button
                   onClick={onLogout}
-                  className="inline-flex items-center justify-center p-2 rounded-xl text-xs sm:text-sm font-semibold text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-900/50 border border-rose-800/50 transition-all"
+                  className={`inline-flex items-center justify-center p-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
+                    isDarkMode 
+                      ? 'text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-900/50 border-rose-800/50' 
+                      : 'text-rose-700 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border-rose-200 shadow-xs'
+                  }`}
                   title="Sign out of your account"
                 >
-                  <LogOut className="w-4 h-4 text-rose-400" />
+                  <LogOut className="w-4 h-4" />
                 </button>
               </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-200 hover:text-white bg-slate-800/80 hover:bg-slate-700 border border-slate-700 transition-all"
+                  className={`inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
+                    isDarkMode 
+                      ? 'text-slate-200 hover:text-white bg-slate-800/80 hover:bg-slate-700 border-slate-700' 
+                      : 'text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border-slate-300 shadow-xs'
+                  }`}
                 >
-                  <Lock className="w-3.5 h-3.5 text-indigo-400" />
+                  <Lock className="w-3.5 h-3.5 text-indigo-500" />
                   <span>Log In</span>
                 </button>
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-900 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-98"
+                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-98"
                 >
                   <span>Register Free</span>
                   <ArrowRight className="w-4 h-4" />
@@ -321,8 +375,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* Hero Section */}
         <section className="pt-12 sm:pt-16 pb-12 text-center max-w-4xl mx-auto">
           {/* Tagline Pill */}
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-indigo-950/80 border border-indigo-700/60 text-indigo-300 text-xs font-bold mb-6 shadow-sm backdrop-blur-sm">
-            <Sparkle className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+          <div className={`inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-bold mb-6 shadow-sm backdrop-blur-sm border ${
+            isDarkMode 
+              ? 'bg-indigo-950/80 border-indigo-700/60 text-indigo-300' 
+              : 'bg-indigo-50 border-indigo-200 text-indigo-800'
+          }`}>
+            <Sparkle className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
             <span>AI Legal Literacy & Statutory Defense for Every Indian Citizen</span>
           </div>
 
@@ -333,7 +391,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-400 -ml-2.5" />
               <span className="font-bold">LIVE STATUTORY CITATION SCANNER</span>
             </div>
-            <div className="p-3 sm:p-4 rounded-2xl bg-slate-950/90 border-2 border-indigo-500/50 shadow-2xl shadow-indigo-950/80 flex items-center justify-center max-w-full overflow-x-auto ring-4 ring-indigo-500/10 backdrop-blur-md">
+            <div className={`p-3 sm:p-4 rounded-2xl border-2 shadow-2xl flex items-center justify-center max-w-full overflow-x-auto ring-4 ring-indigo-500/10 backdrop-blur-md transition-colors ${
+              isDarkMode 
+                ? 'bg-slate-950/90 border-indigo-500/50 shadow-indigo-950/80' 
+                : 'bg-white/90 border-indigo-300/80 shadow-indigo-200/50'
+            }`}>
               <SplitFlapText
                 words={['NYAYA LENS', 'LEGAL SHIELD', 'BARE ACT SYNC', 'PLAIN HINDI', 'CITIZEN POWER']}
                 flipDuration={0.12}
@@ -341,7 +403,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 cycleDelay={2400}
                 charset="alphanumeric"
                 flipsPerChar={8}
-                tileColor="#0f172a"
+                tileColor={isDarkMode ? '#0f172a' : '#1e1b4b'}
                 textColor="#f8fafc"
                 tileRadius={8}
                 gap={6}
@@ -353,16 +415,18 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-['Outfit'] leading-tight mb-5">
-            <span className="text-white">
+            <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
               Paste Any Indian Legal Document.
             </span>
             <br />
-            <span className="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-300 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 bg-clip-text text-transparent">
               Know Your Rights & Exact Next Steps.
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl mx-auto font-normal">
+          <p className={`text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto font-normal ${
+            isDarkMode ? 'text-slate-300' : 'text-slate-600'
+          }`}>
             Whether it's an <strong>unfair rental lease</strong>, a <strong>threatening bank loan notice</strong>, a <strong>counterfeit police FIR</strong>, or a <strong>builder agreement</strong> — Nyaya Lens parses every clause, scores the risk, explains traps in plain Hindi/English, and cites the <em>actual Indian statute</em> protecting you.
           </p>
 
@@ -379,29 +443,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {demoDocuments.length > 0 && (
               <button
                 onClick={() => handleProtectedAction(() => onSelectPreset(demoDocuments[0]))}
-                className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-semibold text-slate-200 bg-slate-800/90 hover:bg-slate-700/90 border border-slate-700 hover:border-slate-600 shadow-sm transition-all"
+                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-semibold transition-all border ${
+                  isDarkMode 
+                    ? 'text-slate-200 bg-slate-800/90 hover:bg-slate-700/90 border-slate-700 hover:border-slate-600' 
+                    : 'text-slate-700 bg-white hover:bg-slate-50 border-slate-300 shadow-xs'
+                }`}
               >
                 <span>Try Sample Rental Agreement</span>
-                <ChevronRight className="w-4 h-4 text-slate-400" />
+                <ChevronRight className={`w-4 h-4 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
               </button>
             )}
           </div>
 
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-slate-400 font-medium">
+          <div className={`mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs font-medium ${
+            isDarkMode ? 'text-slate-400' : 'text-slate-600'
+          }`}>
             <span className="flex items-center">
-              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-500" />
               100% Free for Citizens
             </span>
             <span className="flex items-center">
-              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-500" />
               English, हिन्दी, தமிழ், বাংলা
             </span>
             <span className="flex items-center">
-              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-500" />
               Grounded in Indian Bare Acts
             </span>
             <span className="flex items-center">
-              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-400" />
+              <CheckCircle2 className="w-4 h-4 mr-1.5 text-emerald-500" />
               DPDP Act 2023 Compliant
             </span>
           </div>
@@ -410,13 +480,17 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* Interactive Live Document Scanner Sandbox */}
         <section className="mb-20">
           <div className="text-center mb-6">
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-1">
+            <span className="text-xs font-bold text-amber-500 uppercase tracking-widest block mb-1">
               Interactive Live Demonstration
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+            <h2 className={`text-2xl sm:text-3xl font-bold font-['Outfit'] ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>
               See How Nyaya Lens Decodes Cryptic Legalese
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-xl mx-auto">
+            <p className={`text-xs sm:text-sm mt-1 max-w-xl mx-auto ${
+              isDarkMode ? 'text-slate-400' : 'text-slate-600'
+            }`}>
               Select an Indian document type below to see the clause segmentation, risk score, plain vernacular explanation, and exact legal remedy in action.
             </p>
           </div>
@@ -427,10 +501,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               <button
                 key={doc.id}
                 onClick={() => setSelectedShowcaseId(doc.id)}
-                className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center space-x-2 ${
+                className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center space-x-2 border ${
                   selectedShowcaseId === doc.id
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-2 ring-indigo-400'
-                    : 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border border-slate-700/80'
+                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-2 ring-indigo-400 border-transparent'
+                    : isDarkMode 
+                      ? 'bg-slate-800/80 text-slate-300 hover:bg-slate-700/80 border-slate-700/80' 
+                      : 'bg-white text-slate-700 hover:bg-slate-100 border-slate-200 shadow-xs'
                 }`}
               >
                 <span>{doc.type}</span>
@@ -439,14 +515,20 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Interactive Inspection Card Container */}
-          <div className="bg-slate-950/90 border border-slate-800 rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-xl">
+          <div className={`rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-xl border transition-colors ${
+            isDarkMode ? 'bg-slate-950/90 border-slate-800' : 'bg-white/95 border-slate-200 shadow-xl'
+          }`}>
             <div className="flex flex-col lg:flex-row gap-6">
               
               {/* Left Column: Original Cryptic Legal Clause */}
-              <div className="lg:w-5/12 flex flex-col justify-between bg-slate-900/90 border border-slate-800 rounded-2xl p-5 sm:p-6">
+              <div className={`lg:w-5/12 flex flex-col justify-between rounded-2xl p-5 sm:p-6 border transition-colors ${
+                isDarkMode ? 'bg-slate-900/90 border-slate-800 text-slate-200' : 'bg-slate-50/90 border-slate-200 text-slate-900'
+              }`}>
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                    <span className={`text-xs font-bold uppercase tracking-wider ${
+                      isDarkMode ? 'text-slate-400' : 'text-slate-500'
+                    }`}>
                       Original Legalese Document
                     </span>
                     <span className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${activeShowcase.badgeColor}`}>
@@ -454,42 +536,62 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                     </span>
                   </div>
                   
-                  <h3 className="text-base font-bold text-white mb-3">
+                  <h3 className={`text-base font-bold mb-3 ${
+                    isDarkMode ? 'text-white' : 'text-slate-900'
+                  }`}>
                     {activeShowcase.title}
                   </h3>
 
-                  <div className="p-3.5 bg-slate-950/80 rounded-xl border border-rose-900/40 text-xs sm:text-sm font-mono text-slate-300 leading-relaxed relative overflow-hidden">
+                  <div className={`p-3.5 rounded-xl border text-xs sm:text-sm font-mono leading-relaxed relative overflow-hidden ${
+                    isDarkMode 
+                      ? 'bg-slate-950/80 border-rose-900/40 text-slate-300' 
+                      : 'bg-white border-rose-200 text-slate-800 shadow-xs'
+                  }`}>
                     <div className="absolute top-0 left-0 w-1 h-full bg-rose-500" />
                     {activeShowcase.originalClause}
                   </div>
                 </div>
 
-                <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between text-xs">
-                  <span className="text-slate-400">Clause Risk Evaluation:</span>
-                  <span className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-rose-950/80 text-rose-300 border border-rose-800 font-bold">
-                    <AlertTriangle className="w-3.5 h-3.5 text-rose-400" />
+                <div className={`mt-5 pt-4 border-t flex items-center justify-between text-xs ${
+                  isDarkMode ? 'border-slate-800 text-slate-400' : 'border-slate-200 text-slate-600'
+                }`}>
+                  <span>Clause Risk Evaluation:</span>
+                  <span className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg font-bold border ${
+                    isDarkMode ? 'bg-rose-950/80 text-rose-300 border-rose-800' : 'bg-rose-50 text-rose-700 border-rose-200'
+                  }`}>
+                    <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />
                     <span>Risk {activeShowcase.riskScore}/10 ({activeShowcase.riskLevel})</span>
                   </span>
                 </div>
               </div>
 
               {/* Right Column: Nyaya Lens Plain Language Breakdown & Indian Statute */}
-              <div className="lg:w-7/12 flex flex-col justify-between bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-900 border border-indigo-900/50 rounded-2xl p-5 sm:p-6">
+              <div className={`lg:w-7/12 flex flex-col justify-between rounded-2xl p-5 sm:p-6 border transition-colors ${
+                isDarkMode 
+                  ? 'bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-900 border-indigo-900/50' 
+                  : 'bg-gradient-to-b from-indigo-50/50 via-white to-white border-indigo-100'
+              }`}>
                 <div>
                   {/* Language Toggle */}
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2">
-                      <Sparkles className="w-4 h-4 text-amber-400" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-amber-300">
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <span className={`text-xs font-bold uppercase tracking-wider ${
+                        isDarkMode ? 'text-amber-300' : 'text-amber-700'
+                      }`}>
                         Plain Language Explanation
                       </span>
                     </div>
                     
-                    <div className="flex items-center space-x-1 bg-slate-950 p-1 rounded-lg border border-slate-800 text-xs">
+                    <div className={`flex items-center space-x-1 p-1 rounded-lg border text-xs ${
+                      isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-slate-100 border-slate-200'
+                    }`}>
                       <button
                         onClick={() => setShowcaseLang('hi')}
                         className={`px-2.5 py-1 rounded-md transition-all font-semibold ${
-                          showcaseLang === 'hi' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                          showcaseLang === 'hi' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
                         हिन्दी (Hindi)
@@ -497,7 +599,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                       <button
                         onClick={() => setShowcaseLang('en')}
                         className={`px-2.5 py-1 rounded-md transition-all font-semibold ${
-                          showcaseLang === 'en' ? 'bg-indigo-600 text-white shadow-sm' : 'text-slate-400 hover:text-white'
+                          showcaseLang === 'en' 
+                            ? 'bg-indigo-600 text-white shadow-sm' 
+                            : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
                         }`}
                       >
                         English
@@ -506,34 +610,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                   </div>
 
                   {/* Plain Language Box */}
-                  <div className="p-4 bg-amber-950/20 border border-amber-500/30 rounded-xl mb-4 text-xs sm:text-sm text-amber-100 leading-relaxed font-sans">
+                  <div className={`p-4 rounded-xl mb-4 text-xs sm:text-sm leading-relaxed font-sans border ${
+                    isDarkMode 
+                      ? 'bg-amber-950/25 border-amber-500/30 text-amber-100' 
+                      : 'bg-amber-50/70 border-amber-200 text-amber-950'
+                  }`}>
                     <p>{activeShowcase.plainLanguage[showcaseLang]}</p>
                   </div>
 
                   {/* Statute Citation Pill */}
-                  <div className="p-3.5 bg-indigo-950/50 border border-indigo-600/40 rounded-xl mb-4 text-xs">
-                    <div className="flex items-center space-x-2 text-indigo-300 font-bold mb-1">
-                      <Scale className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                  <div className={`p-3.5 rounded-xl mb-4 text-xs border ${
+                    isDarkMode 
+                      ? 'bg-indigo-950/50 border-indigo-600/40 text-slate-300' 
+                      : 'bg-indigo-50/80 border-indigo-200 text-slate-700'
+                  }`}>
+                    <div className={`flex items-center space-x-2 font-bold mb-1 ${
+                      isDarkMode ? 'text-indigo-300' : 'text-indigo-900'
+                    }`}>
+                      <Scale className={`w-4 h-4 flex-shrink-0 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`} />
                       <span>Grounded Indian Law: {activeShowcase.statute.act} ({activeShowcase.statute.section})</span>
                     </div>
-                    <p className="text-slate-300 mb-2 leading-relaxed">
+                    <p className={`mb-2 leading-relaxed ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
                       {activeShowcase.statute.provision}
                     </p>
-                    <div className="text-[11px] text-emerald-400 font-semibold flex items-center">
-                      <span className="text-slate-400 mr-1.5">Enforcement Authority:</span>
-                      <span>{activeShowcase.statute.authority}</span>
+                    <div className="text-[11px] font-semibold flex items-center">
+                      <span className={`mr-1.5 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}>Enforcement Authority:</span>
+                      <span className={isDarkMode ? 'text-emerald-400' : 'text-emerald-700'}>{activeShowcase.statute.authority}</span>
                     </div>
                   </div>
 
                   {/* Citizen Action Checklist */}
                   <div className="text-xs mb-4">
-                    <span className="font-bold text-white block mb-2">
+                    <span className={`font-bold block mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                       Citizen Action Checklist (What to Do Next):
                     </span>
                     <ul className="space-y-1.5">
                       {activeShowcase.actionItems.map((item, idx) => (
-                        <li key={idx} className="flex items-start space-x-2 text-slate-300">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
+                        <li key={idx} className={`flex items-start space-x-2 ${isDarkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -542,8 +656,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </div>
 
                 {/* Trigger Full Scan CTA */}
-                <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <span className="text-[11px] text-slate-400">
+                <div className={`pt-3 border-t flex flex-col sm:flex-row items-center justify-between gap-3 ${
+                  isDarkMode ? 'border-slate-800 text-slate-400' : 'border-slate-200 text-slate-500'
+                }`}>
+                  <span className="text-[11px]">
                     Want to inspect your real agreement with custom audio playback?
                   </span>
                   <button
@@ -563,62 +679,106 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* 4 Pillars of Nyaya Lens */}
         <section className="mb-20">
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest block mb-1">
+            <span className="text-xs font-bold text-indigo-500 uppercase tracking-widest block mb-1">
               Core Capabilities
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+            <h2 className={`text-2xl sm:text-3xl font-bold font-['Outfit'] ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>
               Why Indian Citizens Rely on Nyaya Lens
             </h2>
-            <p className="text-xs sm:text-sm text-slate-400 mt-2">
+            <p className={`text-xs sm:text-sm mt-2 ${
+              isDarkMode ? 'text-slate-400' : 'text-slate-600'
+            }`}>
               Unlike generic US-centric legal chatbots, Nyaya Lens is engineered specifically for Indian law, Indian languages, and Indian consumer realities.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <div className="bg-slate-950/70 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
-              <div className="w-12 h-12 rounded-xl bg-indigo-950/80 border border-indigo-700/40 text-indigo-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+            <div className={`border rounded-2xl p-6 transition-all duration-200 shadow-subtle group ${
+              isDarkMode 
+                ? 'bg-slate-950/70 border-slate-800 hover:border-indigo-500/50' 
+                : 'bg-white border-slate-200 hover:border-indigo-500/50 shadow-sm hover:shadow-md'
+            }`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform border ${
+                isDarkMode ? 'bg-indigo-950/80 border-indigo-700/40 text-indigo-400' : 'bg-indigo-50 border-indigo-100 text-indigo-700'
+              }`}>
                 <FileText className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+              <h3 className={`text-base font-bold mb-2 font-['Outfit'] ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}>
                 1. Any Document, Any Language
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className={`text-xs sm:text-sm leading-relaxed ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-600'
+              }`}>
                 Paste raw agreements or upload notices in Hindi, English, Tamil, or regional scripts. IBM Granite parses the full text without losing legal context.
               </p>
             </div>
 
-            <div className="bg-slate-950/70 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
-              <div className="w-12 h-12 rounded-xl bg-amber-950/80 border border-amber-700/40 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+            <div className={`border rounded-2xl p-6 transition-all duration-200 shadow-subtle group ${
+              isDarkMode 
+                ? 'bg-slate-950/70 border-slate-800 hover:border-amber-500/50' 
+                : 'bg-white border-slate-200 hover:border-amber-500/50 shadow-sm hover:shadow-md'
+            }`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform border ${
+                isDarkMode ? 'bg-amber-950/80 border-amber-700/40 text-amber-400' : 'bg-amber-50 border-amber-100 text-amber-700'
+              }`}>
                 <Volume2 className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+              <h3 className={`text-base font-bold mb-2 font-['Outfit'] ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}>
                 2. Plain Vernacular & Voice
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className={`text-xs sm:text-sm leading-relaxed ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-600'
+              }`}>
                 Translates convoluted Latin terms and confusing clauses into crystal-clear everyday language. Includes high-fidelity audio readouts for low-literacy citizens.
               </p>
             </div>
 
-            <div className="bg-slate-950/70 border border-slate-800 hover:border-rose-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
-              <div className="w-12 h-12 rounded-xl bg-rose-950/80 border border-rose-700/40 text-rose-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+            <div className={`border rounded-2xl p-6 transition-all duration-200 shadow-subtle group ${
+              isDarkMode 
+                ? 'bg-slate-950/70 border-slate-800 hover:border-rose-500/50' 
+                : 'bg-white border-slate-200 hover:border-rose-500/50 shadow-sm hover:shadow-md'
+            }`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform border ${
+                isDarkMode ? 'bg-rose-950/80 border-rose-700/40 text-rose-400' : 'bg-rose-50 border-rose-100 text-rose-700'
+              }`}>
                 <ShieldAlert className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+              <h3 className={`text-base font-bold mb-2 font-['Outfit'] ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}>
                 3. 2-Axis Risk Scoring (0–10)
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className={`text-xs sm:text-sm leading-relaxed ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-600'
+              }`}>
                 Measures clause risk severity alongside AI model confidence. Flags illegal forfeiture, unilateral penalty escalation, and scam arrest patterns instantly.
               </p>
             </div>
 
-            <div className="bg-slate-950/70 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-6 transition-all duration-200 shadow-subtle group">
-              <div className="w-12 h-12 rounded-xl bg-emerald-950/80 border border-emerald-700/40 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-105 transition-transform">
+            <div className={`border rounded-2xl p-6 transition-all duration-200 shadow-subtle group ${
+              isDarkMode 
+                ? 'bg-slate-950/70 border-slate-800 hover:border-emerald-500/50' 
+                : 'bg-white border-slate-200 hover:border-emerald-500/50 shadow-sm hover:shadow-md'
+            }`}>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform border ${
+                isDarkMode ? 'bg-emerald-950/80 border-emerald-700/40 text-emerald-400' : 'bg-emerald-50 border-emerald-100 text-emerald-700'
+              }`}>
                 <Gavel className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-bold text-white mb-2 font-['Outfit']">
+              <h3 className={`text-base font-bold mb-2 font-['Outfit'] ${
+                isDarkMode ? 'text-white' : 'text-slate-900'
+              }`}>
                 4. Real Statute Citations
               </h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+              <p className={`text-xs sm:text-sm leading-relaxed ${
+                isDarkMode ? 'text-slate-400' : 'text-slate-600'
+              }`}>
                 Every risk flag is grounded in Section numbers from the Indian Contract Act, CPA 2019, RERA, Model Tenancy Act, and RBI Master Directions.
               </p>
             </div>
@@ -626,91 +786,110 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </section>
 
         {/* Indian Statutory Grounding Ticker */}
-        <section className="border border-slate-800 bg-slate-950/80 rounded-2xl p-6 sm:p-8 mb-20 shadow-lg">
+        <section className={`border rounded-2xl p-6 sm:p-8 mb-20 shadow-lg transition-colors ${
+          isDarkMode ? 'border-slate-800 bg-slate-950/80' : 'border-slate-200 bg-white shadow-sm'
+        }`}>
           <div className="flex items-center space-x-2.5 mb-5">
-            <Scale className="w-5 h-5 text-indigo-400" />
-            <h3 className="text-base font-bold text-white font-['Outfit']">
+            <Scale className={`w-5 h-5 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`} />
+            <h3 className={`text-base font-bold font-['Outfit'] ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>
               Pre-Loaded Indian Statute Knowledge Base
             </h3>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold text-slate-300">
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              Contract Act 1872 (Sec 74)
-            </div>
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              Consumer Protection 2019
-            </div>
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              Model Tenancy Act 2021
-            </div>
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              RBI Fair Practices Code
-            </div>
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              IT Act 2000 (Sec 66D)
-            </div>
-            <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800 text-center">
-              Bharatiya Nyaya Sanhita 2023
-            </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs font-semibold">
+            {[
+              'Contract Act 1872 (Sec 74)',
+              'Consumer Protection 2019',
+              'Model Tenancy Act 2021',
+              'RBI Fair Practices Code',
+              'IT Act 2000 (Sec 66D)',
+              'Bharatiya Nyaya Sanhita 2023'
+            ].map((statuteName, idx) => (
+              <div 
+                key={idx}
+                className={`p-3 rounded-xl border text-center transition-colors ${
+                  isDarkMode 
+                    ? 'bg-slate-900/90 border-slate-800 text-slate-300' 
+                    : 'bg-slate-50 border-slate-200 text-slate-700'
+                }`}
+              >
+                {statuteName}
+              </div>
+            ))}
           </div>
         </section>
 
         {/* Real-World Citizen Defense Stories */}
         <section className="mb-20">
           <div className="text-center max-w-xl mx-auto mb-10">
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest block mb-1">
+            <span className="text-xs font-bold text-amber-500 uppercase tracking-widest block mb-1">
               Empowering Citizens
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+            <h2 className={`text-2xl sm:text-3xl font-bold font-['Outfit'] ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>
               How Citizens Defend Their Rights
             </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
-              <div className="flex items-center space-x-2 text-emerald-400 text-xs font-bold mb-3">
+            <div className={`border rounded-2xl p-6 transition-colors ${
+              isDarkMode ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+            }`}>
+              <div className="flex items-center space-x-2 text-emerald-500 text-xs font-bold mb-3">
                 <Check className="w-4 h-4" />
                 <span>SAVED ₹75,000 DEPOSIT</span>
               </div>
-              <h4 className="text-sm font-bold text-white mb-2">
+              <h4 className={`text-sm font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                 "Landlord dropped the unfair 11-month forfeit"
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 "When moving cities, my Bengaluru landlord cited a lock-in clause to seize 2 months deposit. I showed the Nyaya Lens Section 74 citation and the landlord immediately agreed to a standard 1-month notice."
               </p>
-              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+              <div className={`mt-4 pt-3 border-t text-[11px] font-semibold ${
+                isDarkMode ? 'border-slate-800/80 text-slate-500' : 'border-slate-100 text-slate-400'
+              }`}>
                 — Ramesh K., Software Engineer, Bengaluru
               </div>
             </div>
 
-            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
-              <div className="flex items-center space-x-2 text-rose-400 text-xs font-bold mb-3">
+            <div className={`border rounded-2xl p-6 transition-colors ${
+              isDarkMode ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+            }`}>
+              <div className="flex items-center space-x-2 text-rose-500 text-xs font-bold mb-3">
                 <ShieldAlert className="w-4 h-4" />
                 <span>AVOIDED ₹2 LAKH SCAM</span>
               </div>
-              <h4 className="text-sm font-bold text-white mb-2">
+              <h4 className={`text-sm font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                 "Spotted a fake CBI arrest order in seconds"
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 "I received an official-looking police letter threatening digital arrest for courier drugs. Pasted it into Nyaya Lens, and it lit up with a 10/10 scam alert, guiding me straight to dial 1930 instead of paying."
               </p>
-              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+              <div className={`mt-4 pt-3 border-t text-[11px] font-semibold ${
+                isDarkMode ? 'border-slate-800/80 text-slate-500' : 'border-slate-100 text-slate-400'
+              }`}>
                 — Sunita V., Homemaker, Delhi NCR
               </div>
             </div>
 
-            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-6">
-              <div className="flex items-center space-x-2 text-amber-400 text-xs font-bold mb-3">
+            <div className={`border rounded-2xl p-6 transition-colors ${
+              isDarkMode ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200 shadow-sm'
+            }`}>
+              <div className="flex items-center space-x-2 text-amber-500 text-xs font-bold mb-3">
                 <Gavel className="w-4 h-4" />
                 <span>RECOVERY HARASSMENT STOPPED</span>
               </div>
-              <h4 className="text-sm font-bold text-white mb-2">
+              <h4 className={`text-sm font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
                 "Stopped illegal late-night recovery calls"
               </h4>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className={`text-xs leading-relaxed ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
                 "A loan app was calling my workplace. Nyaya Lens gave me the exact RBI Fair Practices Code circular. Once I emailed the bank nodal officer with that citation, all third-party calls ceased within 24 hours."
               </p>
-              <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-500 font-semibold">
+              <div className={`mt-4 pt-3 border-t text-[11px] font-semibold ${
+                isDarkMode ? 'border-slate-800/80 text-slate-500' : 'border-slate-100 text-slate-400'
+              }`}>
                 — Amit P., Small Business Owner, Pune
               </div>
             </div>
@@ -720,10 +899,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         {/* Frequently Asked Questions Accordion */}
         <section className="mb-20 max-w-3xl mx-auto">
           <div className="text-center mb-8">
-            <span className="text-xs font-bold text-indigo-400 uppercase tracking-widest block mb-1">
+            <span className="text-xs font-bold text-indigo-500 uppercase tracking-widest block mb-1">
               Common Questions
             </span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white font-['Outfit']">
+            <h2 className={`text-2xl sm:text-3xl font-bold font-['Outfit'] ${
+              isDarkMode ? 'text-white' : 'text-slate-900'
+            }`}>
               Frequently Asked Questions
             </h2>
           </div>
@@ -732,21 +913,27 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {FAQS.map((faq, idx) => (
               <div
                 key={idx}
-                className="bg-slate-950/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
+                className={`border rounded-2xl overflow-hidden transition-all ${
+                  isDarkMode ? 'bg-slate-950/80 border-slate-800' : 'bg-white border-slate-200 shadow-xs'
+                }`}
               >
                 <button
                   onClick={() => toggleFaq(idx)}
-                  className="w-full p-4 sm:p-5 flex items-center justify-between text-left text-sm font-bold text-white hover:text-indigo-300 transition-colors"
+                  className={`w-full p-4 sm:p-5 flex items-center justify-between text-left text-sm font-bold transition-colors ${
+                    isDarkMode ? 'text-white hover:text-indigo-300' : 'text-slate-900 hover:text-indigo-600'
+                  }`}
                 >
                   <span className="pr-4">{faq.q}</span>
                   {openFaqIndex === idx ? (
-                    <ChevronUp className="w-4 h-4 text-indigo-400 flex-shrink-0" />
+                    <ChevronUp className="w-4 h-4 text-indigo-500 flex-shrink-0" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                    <ChevronDown className={`w-4 h-4 flex-shrink-0 ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`} />
                   )}
                 </button>
                 {openFaqIndex === idx && (
-                  <div className="px-4 sm:px-5 pb-5 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-slate-800/80 pt-3">
+                  <div className={`px-4 sm:px-5 pb-5 text-xs sm:text-sm leading-relaxed border-t pt-3 ${
+                    isDarkMode ? 'text-slate-300 border-slate-800/80' : 'text-slate-600 border-slate-100'
+                  }`}>
                     {faq.a}
                   </div>
                 )}
@@ -776,14 +963,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </section>
 
         {/* Footer with Government Helplines */}
-        <footer className="mt-14 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3">
+        <footer className={`mt-14 pt-6 border-t flex flex-col sm:flex-row items-center justify-between text-xs gap-3 ${
+          isDarkMode ? 'border-slate-800/80 text-slate-400' : 'border-slate-200 text-slate-600'
+        }`}>
           <div>
             © 2026 Nyaya Lens (न्याय लेन्स) — Powered by IBM Granite 3 & watsonx.governance.
           </div>
           <div className="flex items-center space-x-4">
-            <span>National Consumer Helpline: <strong className="text-white">1915</strong></span>
-            <span>Cybercrime: <strong className="text-white">1930</strong></span>
-            <span>NALSA Legal Aid: <strong className="text-white">15100</strong></span>
+            <span>National Consumer Helpline: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>1915</strong></span>
+            <span>Cybercrime: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>1930</strong></span>
+            <span>NALSA Legal Aid: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>15100</strong></span>
           </div>
         </footer>
 

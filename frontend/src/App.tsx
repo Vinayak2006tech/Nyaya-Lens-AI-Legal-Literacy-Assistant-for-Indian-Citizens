@@ -209,6 +209,8 @@ export const App: React.FC = () => {
           currentUser={currentUser}
           onOpenAuth={() => setIsAuthModalOpen(true)}
           onLogout={handleLogout}
+          isDarkMode={isDarkMode}
+          onToggleDarkMode={handleToggleDarkMode}
         />
         <AuthModal
           isOpen={isAuthModalOpen}
