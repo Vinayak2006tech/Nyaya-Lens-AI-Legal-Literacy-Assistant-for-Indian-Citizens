@@ -187,14 +187,17 @@ async function persistUser(userData) {
   // Save to MongoDB Atlas if connected
   if (isMongoConnected) {
     try {
-      await MongoUser.findOneAndUpdate(
-        { email: userData.email.toLowerCase() },
-        userData,
-        { upsert: true, returnDocument: 'after' }
-      );
+      const existing = await MongoUser.findOne({ email: userData.email.toLowerCase() });
+      if (existing) {
+        Object.assign(existing, userData);
+        await existing.save();
+      } else {
+        await MongoUser.create(userData);
+      }
       console.log(`[NyayaLens DB] User ${userData.email} saved to MongoDB Atlas.`);
     } catch (e) {
-      console.warn('[NyayaLens DB] MongoDB save error:', e.message);
+      console.error('[NyayaLens DB] MongoDB save error:', e.message);
+      mongoError = `Save error: ${e.message}`;
     }
   }
 }
@@ -219,12 +222,30 @@ async function authenticateUser(req, res, next) {
 }
 
 // Database Status Endpoint
-app.get('/api/db-status', (req, res) => {
+app.get('/api/db-status', async (req, res) => {
+  let mongoUsers = [];
+  let mongoCount = 0;
+  let queryError = null;
+
+  if (isMongoConnected) {
+    try {
+      mongoCount = await MongoUser.countDocuments();
+      mongoUsers = await MongoUser.find({}, { email: 1, name: 1, role: 1, createdAt: 1 }).sort({ createdAt: -1 }).limit(10);
+    } catch (err) {
+      queryError = err.message;
+    }
+  }
+
   res.json({
     database: 'MongoDB Atlas',
     connected: isMongoConnected,
-    hasPlaceholder: Boolean(MONGODB_URI && MONGODB_URI.includes('<db_username>')),
-    connectionStringConfigured: Boolean(MONGODB_URI)
+    dbName: mongoose.connection?.name || null,
+    dbHost: mongoose.connection?.host || null,
+    readyState: mongoose.connection?.readyState,
+    mongoUserCount: mongoCount,
+    mongoUsers: mongoUsers,
+    queryError: queryError,
+    lastError: mongoError
   });
 });
 
