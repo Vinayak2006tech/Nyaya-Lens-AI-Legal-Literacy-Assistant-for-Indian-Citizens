@@ -99,7 +99,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden">
+    <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden">
       {/* Pane Header */}
       <div className="px-3.5 sm:px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center space-x-2 min-w-0">

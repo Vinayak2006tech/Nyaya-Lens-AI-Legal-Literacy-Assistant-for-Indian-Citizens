@@ -38,7 +38,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
 
   if (isAnalyzing) {
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center">
+      <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center">
         <div className="w-16 h-16 relative mb-4">
           <div className="w-16 h-16 rounded-full border-4 border-slate-100 border-t-indigo-600 animate-spin" />
           <Scale className="w-6 h-6 text-indigo-700 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
@@ -58,7 +58,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
 
   if (!analysis) {
     return (
-      <div className="bg-white border border-slate-200 rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center">
+      <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center">
         <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-700 mb-4 shadow-sm">
           <Scale className="w-6 h-6 sm:w-7 sm:h-7" />
         </div>
@@ -100,7 +100,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden">
+    <div className="bg-white/95 backdrop-blur-md border border-slate-200/90 rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden">
       {/* Pane Header: 2-Axis Score Meter */}
       <div className="p-3.5 sm:p-4 bg-slate-50 border-b border-slate-200">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">

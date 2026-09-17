@@ -11,6 +11,7 @@ import { WatsonGovernanceAuditModal } from './components/WatsonGovernanceAuditMo
 import { DisputeTimelineModal } from './components/DisputeTimelineModal';
 import { ActionableChecklistDrawer } from './components/ActionableChecklistDrawer';
 import { AuthModal } from './components/AuthModal';
+import LineWaves from './components/LineWaves';
 import { FileText, ShieldCheck } from 'lucide-react';
 import { 
   ClauseEvaluation, 
@@ -205,33 +206,58 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-100 selection:text-indigo-900">
-      {/* Top Navigation */}
-      <Navbar
-        currentLanguage={currentLanguage}
-        onSelectLanguage={setCurrentLanguage}
-        demoDocuments={demoDocuments}
-        onSelectDemoDoc={handleSelectDemoDoc}
-        onOpenSimulator={() => setIsSimulatorOpen(true)}
-        onOpenGovernance={() => setIsGovernanceOpen(true)}
-        onOpenTimeline={() => setIsTimelineOpen(true)}
-        onToggleChecklist={() => setIsChecklistOpen(!isChecklistOpen)}
-        checklistCount={analysisResult?.actionable_checklist.length || 0}
-        onGoHome={() => setCurrentView('landing')}
-        currentUser={currentUser}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-        onLogout={handleLogout}
-      />
+    <div className="relative min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-100 selection:text-indigo-900 overflow-hidden">
+      {/* Background Interactive LineWaves Canvas for Workplace */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-auto">
+        <LineWaves
+          speed={0.2}
+          innerLineCount={28}
+          outerLineCount={34}
+          warpIntensity={0.8}
+          rotation={-38}
+          edgeFadeWidth={0.16}
+          colorCycleSpeed={0.85}
+          brightness={0.75}
+          color1="#4338ca"
+          color2="#d97706"
+          color3="#059669"
+          enableMouseInteraction={true}
+          mouseInfluence={2.0}
+          lightMode={true}
+        />
+      </div>
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-5">
-        {/* Scam Alert Banner if triggered */}
-        {analysisResult?.scam_assessment && (
-          <ScamAlertBanner scam={analysisResult.scam_assessment} />
-        )}
+      {/* Subtle background gradient overlay to keep document editor & analysis ultra crisp */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/70 via-slate-50/80 to-slate-100/90 pointer-events-none" />
 
-        {/* Mobile View Segmented Switcher (< lg screens) */}
-        <div className="lg:hidden flex items-center p-1 bg-slate-200/90 rounded-xl mb-3.5 text-xs font-semibold shadow-inner">
+      {/* Foreground Workspace Content */}
+      <div className="relative z-10 flex flex-col flex-1">
+        {/* Top Navigation */}
+        <Navbar
+          currentLanguage={currentLanguage}
+          onSelectLanguage={setCurrentLanguage}
+          demoDocuments={demoDocuments}
+          onSelectDemoDoc={handleSelectDemoDoc}
+          onOpenSimulator={() => setIsSimulatorOpen(true)}
+          onOpenGovernance={() => setIsGovernanceOpen(true)}
+          onOpenTimeline={() => setIsTimelineOpen(true)}
+          onToggleChecklist={() => setIsChecklistOpen(!isChecklistOpen)}
+          checklistCount={analysisResult?.actionable_checklist.length || 0}
+          onGoHome={() => setCurrentView('landing')}
+          currentUser={currentUser}
+          onOpenAuth={() => setIsAuthModalOpen(true)}
+          onLogout={handleLogout}
+        />
+
+        {/* Main Container */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-5">
+          {/* Scam Alert Banner if triggered */}
+          {analysisResult?.scam_assessment && (
+            <ScamAlertBanner scam={analysisResult.scam_assessment} />
+          )}
+
+          {/* Mobile View Segmented Switcher (< lg screens) */}
+          <div className="lg:hidden flex items-center p-1 bg-slate-200/90 rounded-xl mb-3.5 text-xs font-semibold shadow-inner">
           <button
             onClick={() => setMobileTab('document')}
             className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all ${
@@ -338,6 +364,7 @@ export const App: React.FC = () => {
         onClose={() => setIsAuthModalOpen(false)}
         onLoginSuccess={handleLoginSuccess}
       />
+      </div>
     </div>
   );
 };
