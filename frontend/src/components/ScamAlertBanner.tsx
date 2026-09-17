@@ -15,12 +15,12 @@ export const ScamAlertBanner: React.FC<ScamAlertBannerProps> = ({ scam }) => {
         <div className="flex-shrink-0 mt-0.5">
           <ShieldAlert className="h-6 w-6 text-rose-600 animate-pulse" />
         </div>
-        <div className="ml-3 flex-1">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-rose-900 tracking-wide uppercase">
+        <div className="ml-2.5 sm:ml-3 flex-1 min-w-0">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="text-xs sm:text-sm font-bold text-rose-900 tracking-wide uppercase">
               ⚠️ {scam.scam_type} DETECTED (Confidence: {(scam.confidence * 100).toFixed(0)}%)
             </h3>
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-rose-200 text-rose-900">
+            <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] sm:text-xs font-semibold bg-rose-200 text-rose-900 flex-shrink-0">
               DO NOT PAY MONEY
             </span>
           </div>

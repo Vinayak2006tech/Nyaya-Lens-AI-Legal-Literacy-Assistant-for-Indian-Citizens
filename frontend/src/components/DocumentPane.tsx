@@ -99,38 +99,38 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
   };
 
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl shadow-card flex flex-col h-[calc(100vh-140px)] min-h-[600px] overflow-hidden">
+    <div className="bg-white border border-slate-200 rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden">
       {/* Pane Header */}
-      <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <FileText className="w-5 h-5 text-indigo-700" />
-          <h2 className="text-sm font-bold text-slate-900 tracking-wide uppercase font-['Outfit']">
+      <div className="px-3.5 sm:px-5 py-3 bg-slate-50 border-b border-slate-200 flex flex-wrap items-center justify-between gap-2">
+        <div className="flex items-center space-x-2 min-w-0">
+          <FileText className="w-4 h-4 sm:w-5 sm:h-5 text-indigo-700 flex-shrink-0" />
+          <h2 className="text-xs sm:text-sm font-bold text-slate-900 tracking-wide uppercase font-['Outfit'] truncate">
             Legal Document (दस्तावेज़)
           </h2>
           {clauses.length > 0 && (
-            <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold border border-indigo-200">
-              {clauses.length} Clauses Identified
+            <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 font-semibold border border-indigo-200 whitespace-nowrap hidden sm:inline-block">
+              {clauses.length} Clauses
             </span>
           )}
         </div>
 
         {/* Header Tools */}
-        <div className="flex items-center space-x-1.5">
+        <div className="flex items-center space-x-1.5 flex-wrap">
           {clauses.length > 0 && (
-            <div className="flex bg-slate-200 p-0.5 rounded-lg mr-2 text-xs font-medium">
+            <div className="flex bg-slate-200 p-0.5 rounded-lg text-xs font-medium">
               <button
                 onClick={() => setViewMode('annotated')}
-                className={`px-2.5 py-1 rounded-md transition-all ${
+                className={`px-2 py-1 rounded-md transition-all text-[11px] sm:text-xs ${
                   viewMode === 'annotated'
                     ? 'bg-white text-indigo-700 shadow-sm font-semibold'
                     : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                Annotated View
+                Annotated
               </button>
               <button
                 onClick={() => setViewMode('editor')}
-                className={`px-2.5 py-1 rounded-md transition-all ${
+                className={`px-2 py-1 rounded-md transition-all text-[11px] sm:text-xs ${
                   viewMode === 'editor'
                     ? 'bg-white text-indigo-700 shadow-sm font-semibold'
                     : 'text-slate-600 hover:text-slate-900'
@@ -143,7 +143,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
 
           <button
             onClick={toggleSpeech}
-            className={`inline-flex items-center space-x-1 text-xs px-2.5 py-1 rounded-lg border transition-colors ${
+            className={`inline-flex items-center space-x-1 text-xs px-2 sm:px-2.5 py-1 rounded-lg border transition-colors ${
               isSpeaking
                 ? 'bg-rose-50 text-rose-700 border-rose-200 animate-pulse'
                 : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
@@ -151,7 +151,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
             title="Read text aloud for low-literacy users"
           >
             {isSpeaking ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5 text-indigo-600" />}
-            <span className="hidden sm:inline">{isSpeaking ? 'Stop Audio' : 'बोलकर सुनाएं (Audio)'}</span>
+            <span className="hidden md:inline">{isSpeaking ? 'Stop Audio' : 'Audio (बोलकर सुनाएं)'}</span>
           </button>
 
           <button
@@ -164,7 +164,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
 
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="inline-flex items-center space-x-1 text-xs font-medium text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg transition-colors"
+            className="inline-flex items-center space-x-1 text-xs font-medium text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 px-2 sm:px-2.5 py-1 rounded-lg transition-colors"
             title="Upload PDF, Image (OCR) or Text"
           >
             <UploadCloud className="w-3.5 h-3.5 text-slate-600" />
@@ -246,8 +246,8 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
       </div>
 
       {/* Pane Footer: Action Trigger */}
-      <div className="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between">
-        <span className="text-xs text-slate-500">
+      <div className="px-3.5 sm:px-5 py-3 sm:py-3.5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+        <span className="text-[11px] sm:text-xs text-slate-500 truncate">
           {documentText.trim().length > 0
             ? `${documentText.trim().split(/\s+/).length} words | ${documentText.length} characters`
             : 'Paste or upload a document to begin clause scanning'}
@@ -256,7 +256,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
         <button
           onClick={onAnalyze}
           disabled={isAnalyzing || !documentText.trim()}
-          className={`inline-flex items-center space-x-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white shadow-sm transition-all ${
+          className={`inline-flex items-center justify-center space-x-2 px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold text-white shadow-sm transition-all w-full sm:w-auto ${
             isAnalyzing || !documentText.trim()
               ? 'bg-slate-300 cursor-not-allowed text-slate-500'
               : 'bg-indigo-700 hover:bg-indigo-800 active:scale-98 ring-2 ring-indigo-500/20'

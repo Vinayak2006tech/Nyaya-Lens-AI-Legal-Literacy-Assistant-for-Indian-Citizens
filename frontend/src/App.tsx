@@ -11,10 +11,11 @@ import { WatsonGovernanceAuditModal } from './components/WatsonGovernanceAuditMo
 import { DisputeTimelineModal } from './components/DisputeTimelineModal';
 import { ActionableChecklistDrawer } from './components/ActionableChecklistDrawer';
 import { AuthModal } from './components/AuthModal';
+import { FileText, ShieldCheck } from 'lucide-react';
 import { 
   ClauseEvaluation, 
   DocumentAnalysisResult, 
-  DemoDocument,
+  DemoDocument, 
   UserProfile 
 } from './types';
 import { apiUrl, parseResponseJson } from './config/api';
@@ -31,6 +32,7 @@ export const App: React.FC = () => {
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [analysisResult, setAnalysisResult] = useState<DocumentAnalysisResult | null>(null);
   const [activeClauseId, setActiveClauseId] = useState<string | null>(null);
+  const [mobileTab, setMobileTab] = useState<'document' | 'analysis'>('document');
 
   // Modals state
   const [isSimulatorOpen, setIsSimulatorOpen] = useState(false);
@@ -99,6 +101,7 @@ export const App: React.FC = () => {
     setDocumentText(doc.content);
     setAnalysisResult(null);
     setActiveClauseId(null);
+    setMobileTab('document');
   };
 
   const handleLaunchPreset = (doc: DemoDocument) => {
@@ -150,6 +153,7 @@ export const App: React.FC = () => {
 
       const result: DocumentAnalysisResult = await parseResponseJson<DocumentAnalysisResult>(response);
       setAnalysisResult(result);
+      setMobileTab('analysis');
 
       try {
         confetti({
@@ -220,16 +224,53 @@ export const App: React.FC = () => {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-5">
         {/* Scam Alert Banner if triggered */}
         {analysisResult?.scam_assessment && (
           <ScamAlertBanner scam={analysisResult.scam_assessment} />
         )}
 
-        {/* Split-Pane Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Mobile View Segmented Switcher (< lg screens) */}
+        <div className="lg:hidden flex items-center p-1 bg-slate-200/90 rounded-xl mb-3.5 text-xs font-semibold shadow-inner">
+          <button
+            onClick={() => setMobileTab('document')}
+            className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all ${
+              mobileTab === 'document'
+                ? 'bg-white text-indigo-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <FileText className="w-4 h-4 text-indigo-600" />
+            <span>Document (दस्तावेज़)</span>
+          </button>
+          <button
+            onClick={() => setMobileTab('analysis')}
+            className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all relative ${
+              mobileTab === 'analysis'
+                ? 'bg-white text-indigo-900 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <ShieldCheck className="w-4 h-4 text-indigo-600" />
+            <span>Risk Analysis (विश्लेषण)</span>
+            {analysisResult && (
+              <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
+                analysisResult.overall_risk_score >= 6.5
+                  ? 'bg-rose-100 text-rose-700'
+                  : analysisResult.overall_risk_score >= 3.5
+                  ? 'bg-amber-100 text-amber-700'
+                  : 'bg-emerald-100 text-emerald-700'
+              }`}>
+                {analysisResult.overall_risk_score}/10
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* Split-Pane Layout: Responsive Tab-based on < lg, Side-by-Side on lg+ */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
           {/* Left Pane: Document Ingestion & Interactive Clause Viewer */}
-          <div className="lg:col-span-6 w-full">
+          <div className={`lg:col-span-6 w-full ${mobileTab === 'document' ? 'block' : 'hidden lg:block'}`}>
             <DocumentPane
               documentText={documentText}
               onTextChange={setDocumentText}
@@ -237,13 +278,18 @@ export const App: React.FC = () => {
               isAnalyzing={isAnalyzing}
               clauses={analysisResult?.clauses || []}
               activeClauseId={activeClauseId}
-              onSelectClause={handleSelectClause}
+              onSelectClause={(id) => {
+                handleSelectClause(id);
+                if (window.innerWidth < 1024) {
+                  setMobileTab('analysis');
+                }
+              }}
               currentLanguage={currentLanguage}
             />
           </div>
 
           {/* Right Pane: Live 2-Axis Risk Annotations & Statute Citations */}
-          <div className="lg:col-span-6 w-full">
+          <div className={`lg:col-span-6 w-full ${mobileTab === 'analysis' ? 'block' : 'hidden lg:block'}`}>
             <RiskAnalysisPane
               analysis={analysisResult}
               isAnalyzing={isAnalyzing}
