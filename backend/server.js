@@ -43,13 +43,14 @@ const userSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const MongoUser = mongoose.model('User', userSchema);
 let isMongoConnected = false;
+let mongoError = null;
 
 // Connect to MongoDB Atlas
 async function initMongoDB() {
   if (!MONGODB_URI || MONGODB_URI.includes('<db_username>')) {
-    console.log('[NyayaLens DB] MongoDB connection string contains placeholder <db_username>. Waiting for database username to connect.');
+    mongoError = 'MONGODB_URI environment variable is not set in Render (still using <db_username> placeholder)';
+    console.log(`[NyayaLens DB] ${mongoError}`);
     return;
   }
   try {
@@ -58,10 +59,12 @@ async function initMongoDB() {
       serverSelectionTimeoutMS: 5000
     });
     isMongoConnected = true;
+    mongoError = null;
     console.log('[NyayaLens DB] Connected to MongoDB Atlas successfully.');
     await syncLocalUsersToMongo();
   } catch (err) {
     isMongoConnected = false;
+    mongoError = err.message;
     console.error('[NyayaLens DB] MongoDB connection attempt failed:', err.message);
     console.log('[NyayaLens DB] Continuing with persistent local storage (users_db.json).');
   }
@@ -370,6 +373,11 @@ app.get('/api/health', async (req, res) => {
     service: 'Nyaya Lens Backend Gateway',
     status: 'online',
     port: PORT,
+    database: {
+      status: isMongoConnected ? 'connected' : 'disconnected',
+      connected: isMongoConnected,
+      error: mongoError
+    },
     ai_service: aiStatus,
     timestamp: new Date().toISOString()
   });
