@@ -22,23 +22,23 @@ export const FairClauseModal: React.FC<FairClauseModalProps> = ({ clause, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className={`rounded-2xl shadow-2xl border max-w-3xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/70 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4">
+      <div className={`rounded-2xl shadow-2xl border max-w-3xl w-full max-h-[90dvh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200 ${
         isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-100' : 'bg-white border-slate-200 text-slate-900'
       }`}>
         {/* Header */}
-        <div className={`px-6 py-4 border-b flex items-center justify-between ${
+        <div className={`px-4 sm:px-6 py-3 sm:py-4 border-b flex items-center justify-between ${
           isDarkMode ? 'bg-slate-900/95 border-slate-800' : 'bg-slate-50 border-slate-200'
         }`}>
-          <div className="flex items-center space-x-2">
-            <Scale className={`w-5 h-5 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`} />
-            <h3 className={`text-base font-bold font-['Outfit'] ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
+          <div className="flex items-center space-x-2 min-w-0">
+            <Scale className={`w-5 h-5 flex-shrink-0 ${isDarkMode ? 'text-indigo-400' : 'text-indigo-700'}`} />
+            <h3 className={`text-sm sm:text-base font-bold font-['Outfit'] truncate ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>
               Clause Comparison: Your Clause vs Standard Fair Model Template
             </h3>
           </div>
           <button
             onClick={onClose}
-            className={`p-1 rounded-lg transition-colors ${
+            className={`p-1 rounded-lg transition-colors flex-shrink-0 ${
               isDarkMode ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-slate-400 hover:text-slate-700 hover:bg-slate-200'
             }`}
           >
@@ -47,7 +47,7 @@ export const FairClauseModal: React.FC<FairClauseModalProps> = ({ clause, onClos
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Left: Your Document's Clause */}
             <div className={`border rounded-xl p-4 ${

@@ -278,37 +278,37 @@ export const App: React.FC = () => {
         />
 
         {/* Main Container */}
-        <main className="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-3.5 sm:py-5">
+        <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 py-2.5 sm:py-5">
           {/* Scam Alert Banner if triggered */}
           {analysisResult?.scam_assessment && (
             <ScamAlertBanner scam={analysisResult.scam_assessment} isDarkMode={isDarkMode} />
           )}
 
           {/* Mobile View Segmented Switcher (< lg screens) */}
-          <div className={`lg:hidden flex items-center p-1 rounded-xl mb-3.5 text-xs font-semibold shadow-inner border transition-colors ${
+          <div className={`lg:hidden flex items-center p-1 rounded-xl mb-3 text-xs font-semibold shadow-inner border transition-colors ${
             isDarkMode ? 'bg-slate-800/90 border-slate-700/80' : 'bg-slate-200/90 border-slate-300/60'
           }`}>
           <button
             onClick={() => setMobileTab('document')}
-            className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all ${
+            className={`flex-1 flex items-center justify-center space-x-1.5 py-2.5 rounded-lg transition-all min-h-[40px] ${
               mobileTab === 'document'
                 ? isDarkMode ? 'bg-slate-900 text-indigo-300 shadow-sm' : 'bg-white text-indigo-900 shadow-sm'
                 : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <FileText className="w-4 h-4 text-indigo-500" />
-            <span>Document (दस्तावेज़)</span>
+            <FileText className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+            <span>Document<span className="hidden xs:inline"> (दस्तावेज़)</span></span>
           </button>
           <button
             onClick={() => setMobileTab('analysis')}
-            className={`flex-1 flex items-center justify-center space-x-1.5 py-2 rounded-lg transition-all relative ${
+            className={`flex-1 flex items-center justify-center space-x-1.5 py-2.5 rounded-lg transition-all relative min-h-[40px] ${
               mobileTab === 'analysis'
                 ? isDarkMode ? 'bg-slate-900 text-indigo-300 shadow-sm' : 'bg-white text-indigo-900 shadow-sm'
                 : isDarkMode ? 'text-slate-400 hover:text-white' : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            <ShieldCheck className="w-4 h-4 text-indigo-500" />
-            <span>Risk Analysis (विश्लेषण)</span>
+            <ShieldCheck className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+            <span>Analysis<span className="hidden xs:inline"> (विश्लेषण)</span></span>
             {analysisResult && (
               <span className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
                 analysisResult.overall_risk_score >= 6.5

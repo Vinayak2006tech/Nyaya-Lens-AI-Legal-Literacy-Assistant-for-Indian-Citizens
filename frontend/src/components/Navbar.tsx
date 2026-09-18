@@ -400,7 +400,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onClick={() => setMobileMenuOpen(false)}
           />
 
-          <div className={`relative z-40 lg:hidden border-t px-4 pt-3 pb-6 space-y-3.5 shadow-xl max-h-[calc(100vh-4rem)] overflow-y-auto animate-in slide-in-from-top-3 duration-200 ${
+          <div className={`relative z-40 lg:hidden border-t px-4 pt-3 pb-6 space-y-3.5 shadow-xl max-h-[calc(100dvh-4rem)] overflow-y-auto animate-in slide-in-from-top-3 duration-200 ${
             isDarkMode 
               ? 'bg-slate-900 border-slate-800 text-slate-100' 
               : 'bg-white border-slate-200 text-slate-900'

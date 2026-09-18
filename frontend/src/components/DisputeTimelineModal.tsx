@@ -73,38 +73,38 @@ export const DisputeTimelineModal: React.FC<DisputeTimelineModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full max-h-[90dvh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center">
-              <Calendar className="w-5 h-5" />
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
-                Multi-Document Dispute Escalation Timeline
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 font-['Outfit'] truncate">
+                Dispute Escalation Timeline
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-slate-500 truncate">
                 Track chronological notices, statutory cure windows, and filing deadlines
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content: Timeline Tree */}
-        <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
-          <div className="relative border-l-2 border-indigo-200 ml-4 pl-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-6 overflow-y-auto flex-1">
+          <div className="relative border-l-2 border-indigo-200 ml-2 sm:ml-4 pl-4 sm:pl-6 space-y-4 sm:space-y-6">
             {SAMPLE_TIMELINE.map((event, idx) => (
               <div key={idx} className="relative group">
                 {/* Node Bullet */}
-                <div className={`absolute -left-[31px] top-0 w-4 h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center ${
+                <div className={`absolute -left-[23px] sm:-left-[31px] top-0 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full border-2 border-white shadow-sm flex items-center justify-center ${
                   event.urgency === 'HIGH'
                     ? 'bg-rose-600'
                     : event.urgency === 'MEDIUM'

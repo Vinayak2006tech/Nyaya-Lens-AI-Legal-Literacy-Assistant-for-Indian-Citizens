@@ -266,21 +266,21 @@ export const LandingPage: React.FC<LandingPageProps> = ({
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-8 pb-24">
         
         {/* Top Mini Brand Navigation */}
-        <header className={`flex items-center justify-between pb-6 sm:pb-8 border-b gap-3 transition-colors ${
+        <header className={`flex items-center justify-between pb-4 sm:pb-8 border-b gap-2 sm:gap-3 transition-colors ${
           isDarkMode ? 'border-slate-800/80' : 'border-slate-200'
         }`}>
-          <div className="flex items-center space-x-3 min-w-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400/30 flex-shrink-0">
-              <Scale className="w-5 h-5 sm:w-6 sm:h-6" />
+          <div className="flex items-center space-x-2 sm:space-x-3 min-w-0">
+            <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-tr from-indigo-500 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/25 ring-2 ring-indigo-400/30 flex-shrink-0">
+              <Scale className="w-4 h-4 sm:w-6 sm:h-6" />
             </div>
             <div className="min-w-0">
-              <div className="flex items-center space-x-2">
-                <span className={`text-xl sm:text-2xl font-bold tracking-tight font-['Outfit'] truncate ${
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <span className={`text-lg sm:text-2xl font-bold tracking-tight font-['Outfit'] truncate ${
                   isDarkMode ? 'text-white' : 'text-slate-900'
                 }`}>
                   Nyaya Lens
                 </span>
-                <span className="text-[11px] font-extrabold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-full whitespace-nowrap">
+                <span className="text-[10px] sm:text-[11px] font-extrabold text-amber-500 bg-amber-500/10 border border-amber-500/30 px-1.5 sm:px-2 py-0.5 rounded-full whitespace-nowrap hidden xs:inline-block">
                   न्याय लेन्स
                 </span>
               </div>
@@ -292,7 +292,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </div>
           </div>
 
-          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+          <div className="flex items-center space-x-1.5 sm:space-x-3 flex-shrink-0">
             <span className={`hidden lg:inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border shadow-xs ${
               isDarkMode 
                 ? 'bg-emerald-950/80 text-emerald-300 border-emerald-700/60' 
@@ -306,7 +306,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {onToggleDarkMode && (
               <button
                 onClick={onToggleDarkMode}
-                className={`p-2 rounded-xl border transition-all flex items-center justify-center ${
+                className={`p-1.5 sm:p-2 rounded-lg sm:rounded-xl border transition-all flex items-center justify-center ${
                   isDarkMode 
                     ? 'bg-slate-800/80 border-slate-700 text-amber-400 hover:text-amber-300 hover:bg-slate-700/80' 
                     : 'bg-white border-slate-300 text-slate-700 hover:text-indigo-600 hover:bg-slate-100 shadow-xs'
@@ -319,39 +319,39 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             )}
 
             {currentUser ? (
-              <div className="flex items-center space-x-2">
-                <div className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl max-w-[150px] sm:max-w-[200px] border ${
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
+                <div className={`flex items-center space-x-1.5 sm:space-x-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg sm:rounded-xl max-w-[120px] sm:max-w-[200px] border ${
                   isDarkMode ? 'bg-slate-800/80 border-slate-700 text-slate-200' : 'bg-slate-100 border-slate-200 text-slate-800'
                 }`}>
-                  <div className="w-6 h-6 rounded-full bg-indigo-500 text-white font-bold text-xs flex items-center justify-center flex-shrink-0">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-indigo-500 text-white font-bold text-[10px] sm:text-xs flex items-center justify-center flex-shrink-0">
                     {currentUser.name.substring(0, 2).toUpperCase()}
                   </div>
                   <span className="text-xs font-bold truncate hidden sm:inline">{currentUser.name}</span>
                 </div>
                 <button
                   onClick={onStart}
-                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/30 active:scale-98"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 transition-all shadow-md shadow-indigo-600/30 active:scale-98"
                 >
                   <span>Workspace</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
                 <button
                   onClick={onLogout}
-                  className={`inline-flex items-center justify-center p-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
+                  className={`inline-flex items-center justify-center p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold border transition-all ${
                     isDarkMode 
                       ? 'text-rose-400 hover:text-rose-300 bg-rose-950/40 hover:bg-rose-900/50 border-rose-800/50' 
                       : 'text-rose-700 hover:text-rose-800 bg-rose-50 hover:bg-rose-100 border-rose-200 shadow-xs'
                   }`}
                   title="Sign out of your account"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1.5 sm:space-x-2">
                 <button
                   onClick={onOpenAuth}
-                  className={`inline-flex items-center space-x-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
+                  className={`inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
                     isDarkMode 
                       ? 'text-slate-200 hover:text-white bg-slate-800/80 hover:bg-slate-700 border-slate-700' 
                       : 'text-slate-700 hover:text-slate-900 bg-white hover:bg-slate-100 border-slate-300 shadow-xs'
@@ -362,10 +362,10 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 </button>
                 <button
                   onClick={onOpenAuth}
-                  className="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-98"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold text-slate-950 bg-amber-400 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-98"
                 >
-                  <span>Register Free</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span><span className="xs:hidden">Register</span><span className="hidden xs:inline">Register Free</span></span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               </div>
             )}
@@ -373,25 +373,25 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </header>
 
         {/* Hero Section */}
-        <section className="pt-12 sm:pt-16 pb-12 text-center max-w-4xl mx-auto">
+        <section className="pt-8 sm:pt-16 pb-8 sm:pb-12 text-center max-w-4xl mx-auto px-2 sm:px-0">
           {/* Tagline Pill */}
-          <div className={`inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full text-xs font-bold mb-6 shadow-sm backdrop-blur-sm border ${
+          <div className={`inline-flex items-center space-x-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-bold mb-5 sm:mb-6 shadow-sm backdrop-blur-sm border ${
             isDarkMode 
               ? 'bg-indigo-950/80 border-indigo-700/60 text-indigo-300' 
               : 'bg-indigo-50 border-indigo-200 text-indigo-800'
           }`}>
-            <Sparkle className="w-3.5 h-3.5 text-amber-500 animate-pulse" />
-            <span>AI Legal Literacy & Statutory Defense for Every Indian Citizen</span>
+            <Sparkle className="w-3.5 h-3.5 text-amber-500 animate-pulse flex-shrink-0" />
+            <span className="text-center">AI Legal Literacy & Statutory Defense for Every Indian Citizen</span>
           </div>
 
           {/* Retro SplitFlap Live Dispatcher */}
-          <div className="flex flex-col items-center justify-center mb-7">
-            <div className="inline-flex items-center space-x-2 px-4 py-1 rounded-t-xl bg-gradient-to-r from-indigo-700 via-indigo-600 to-amber-600 border border-b-0 border-indigo-500/80 text-[10px] sm:text-[11px] uppercase font-mono tracking-wider text-amber-200 shadow-md">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-0.5" />
-              <span className="w-2 h-2 rounded-full bg-emerald-400 -ml-2.5" />
+          <div className="flex flex-col items-center justify-center mb-6 sm:mb-7 w-full max-w-full">
+            <div className="inline-flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-4 py-1 rounded-t-xl bg-gradient-to-r from-indigo-700 via-indigo-600 to-amber-600 border border-b-0 border-indigo-500/80 text-[9px] sm:text-[11px] uppercase font-mono tracking-wider text-amber-200 shadow-md">
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-ping mr-0.5" />
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 -ml-2 sm:-ml-2.5" />
               <span className="font-bold">LIVE STATUTORY CITATION SCANNER</span>
             </div>
-            <div className={`p-3 sm:p-4 rounded-2xl border-2 shadow-2xl flex items-center justify-center max-w-full overflow-x-auto ring-4 ring-indigo-500/10 backdrop-blur-md transition-colors ${
+            <div className={`p-2.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 shadow-2xl flex items-center justify-center w-full max-w-full overflow-hidden ring-2 sm:ring-4 ring-indigo-500/10 backdrop-blur-md transition-colors ${
               isDarkMode 
                 ? 'bg-slate-950/90 border-indigo-500/50 shadow-indigo-950/80' 
                 : 'bg-white/90 border-indigo-300/80 shadow-indigo-200/50'
@@ -405,16 +405,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
                 flipsPerChar={8}
                 tileColor={isDarkMode ? '#0f172a' : '#1e1b4b'}
                 textColor="#f8fafc"
-                tileRadius={8}
-                gap={6}
-                fontSize={30}
+                tileRadius={6}
+                gap="clamp(2px, 0.8vw, 6px)"
+                fontSize="clamp(12px, 3.8vw, 28px)"
                 loop
                 padTo={13}
               />
             </div>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-['Outfit'] leading-tight mb-5">
+          <h1 className="text-2xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight font-['Outfit'] leading-tight mb-4 sm:mb-5">
             <span className={isDarkMode ? 'text-white' : 'text-slate-900'}>
               Paste Any Indian Legal Document.
             </span>
@@ -424,16 +424,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             </span>
           </h1>
 
-          <p className={`text-base sm:text-lg leading-relaxed mb-8 max-w-2xl mx-auto font-normal ${
+          <p className={`text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8 max-w-2xl mx-auto font-normal ${
             isDarkMode ? 'text-slate-300' : 'text-slate-600'
           }`}>
             Whether it's an <strong>unfair rental lease</strong>, a <strong>threatening bank loan notice</strong>, a <strong>counterfeit police FIR</strong>, or a <strong>builder agreement</strong> — Nyaya Lens parses every clause, scores the risk, explains traps in plain Hindi/English, and cites the <em>actual Indian statute</em> protecting you.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+          <div className="flex flex-col xs:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full">
             <button
               onClick={() => handleProtectedAction(onStart)}
-              className="w-full sm:w-auto inline-flex items-center justify-center space-x-2.5 px-8 py-3.5 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all active:scale-98 ring-2 ring-amber-400/30"
+              className="w-full xs:w-auto inline-flex items-center justify-center space-x-2.5 px-6 sm:px-8 py-3.5 rounded-xl text-sm font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 shadow-lg shadow-amber-400/25 transition-all active:scale-98 ring-2 ring-amber-400/30"
             >
               <FileSearch className="w-4 h-4 text-slate-950" />
               <span>{currentUser ? 'Open Legal Workspace' : 'Get Started — Paste Your Document'}</span>
@@ -443,7 +443,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
             {demoDocuments.length > 0 && (
               <button
                 onClick={() => handleProtectedAction(() => onSelectPreset(demoDocuments[0]))}
-                className={`w-full sm:w-auto inline-flex items-center justify-center space-x-2 px-6 py-3.5 rounded-xl text-sm font-semibold transition-all border ${
+                className={`w-full xs:w-auto inline-flex items-center justify-center space-x-2 px-5 sm:px-6 py-3.5 rounded-xl text-xs sm:text-sm font-semibold transition-all border ${
                   isDarkMode 
                     ? 'text-slate-200 bg-slate-800/90 hover:bg-slate-700/90 border-slate-700 hover:border-slate-600' 
                     : 'text-slate-700 bg-white hover:bg-slate-50 border-slate-300 shadow-xs'
@@ -496,12 +496,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Document Selector Tabs */}
-          <div className="flex items-center justify-center gap-2 mb-6 overflow-x-auto max-w-full pb-2">
+          <div className="flex items-center justify-start sm:justify-center gap-1.5 sm:gap-2 mb-4 sm:mb-6 overflow-x-auto max-w-full pb-2 px-1">
             {SHOWCASE_DOCS.map(doc => (
               <button
                 key={doc.id}
                 onClick={() => setSelectedShowcaseId(doc.id)}
-                className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center space-x-2 border ${
+                className={`px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center space-x-2 border flex-shrink-0 ${
                   selectedShowcaseId === doc.id
                     ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-2 ring-indigo-400 border-transparent'
                     : isDarkMode 
@@ -515,13 +515,13 @@ export const LandingPage: React.FC<LandingPageProps> = ({
           </div>
 
           {/* Interactive Inspection Card Container */}
-          <div className={`rounded-3xl p-5 sm:p-8 shadow-2xl backdrop-blur-xl border transition-colors ${
+          <div className={`rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl backdrop-blur-xl border transition-colors ${
             isDarkMode ? 'bg-slate-950/90 border-slate-800' : 'bg-white/95 border-slate-200 shadow-xl'
           }`}>
-            <div className="flex flex-col lg:flex-row gap-6">
+            <div className="flex flex-col lg:flex-row gap-5 sm:gap-6">
               
               {/* Left Column: Original Cryptic Legal Clause */}
-              <div className={`lg:w-5/12 flex flex-col justify-between rounded-2xl p-5 sm:p-6 border transition-colors ${
+              <div className={`lg:w-5/12 flex flex-col justify-between rounded-xl sm:rounded-2xl p-4 sm:p-6 border transition-colors ${
                 isDarkMode ? 'bg-slate-900/90 border-slate-800 text-slate-200' : 'bg-slate-50/90 border-slate-200 text-slate-900'
               }`}>
                 <div>
@@ -566,7 +566,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({
               </div>
 
               {/* Right Column: Nyaya Lens Plain Language Breakdown & Indian Statute */}
-              <div className={`lg:w-7/12 flex flex-col justify-between rounded-2xl p-5 sm:p-6 border transition-colors ${
+              <div className={`lg:w-7/12 flex flex-col justify-between rounded-xl sm:rounded-2xl p-4 sm:p-6 border transition-colors ${
                 isDarkMode 
                   ? 'bg-gradient-to-b from-indigo-950/40 via-slate-900 to-slate-900 border-indigo-900/50' 
                   : 'bg-gradient-to-b from-indigo-50/50 via-white to-white border-indigo-100'
@@ -963,14 +963,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         </section>
 
         {/* Footer with Government Helplines */}
-        <footer className={`mt-14 pt-6 border-t flex flex-col sm:flex-row items-center justify-between text-xs gap-3 ${
+        <footer className={`mt-14 pt-6 border-t flex flex-col sm:flex-row items-center justify-between text-[11px] sm:text-xs gap-3 text-center sm:text-left ${
           isDarkMode ? 'border-slate-800/80 text-slate-400' : 'border-slate-200 text-slate-600'
         }`}>
           <div>
             © 2026 Nyaya Lens (न्याय लेन्स) — Powered by IBM Granite 3 & watsonx.governance.
           </div>
-          <div className="flex items-center space-x-4">
-            <span>National Consumer Helpline: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>1915</strong></span>
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-x-4 gap-y-2">
+            <span>Consumer Helpline: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>1915</strong></span>
             <span>Cybercrime: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>1930</strong></span>
             <span>NALSA Legal Aid: <strong className={isDarkMode ? 'text-white' : 'text-slate-900'}>15100</strong></span>
           </div>

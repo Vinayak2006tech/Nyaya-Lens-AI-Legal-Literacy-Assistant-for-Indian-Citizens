@@ -40,7 +40,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
 
   if (isAnalyzing) {
     return (
-      <div className={`backdrop-blur-md rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors duration-200 border ${
+      <div className={`backdrop-blur-md rounded-2xl shadow-card h-[calc(100dvh-200px)] sm:h-[calc(100dvh-220px)] lg:h-[calc(100vh-140px)] min-h-[400px] sm:min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors duration-200 border ${
         isDarkMode 
           ? 'bg-slate-900/90 border-slate-800 text-slate-100' 
           : 'bg-white/95 border-slate-200/90 text-slate-900'
@@ -74,7 +74,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
 
   if (!analysis) {
     return (
-      <div className={`backdrop-blur-md rounded-2xl shadow-card h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors duration-200 border ${
+      <div className={`backdrop-blur-md rounded-2xl shadow-card h-[calc(100dvh-200px)] sm:h-[calc(100dvh-220px)] lg:h-[calc(100vh-140px)] min-h-[400px] sm:min-h-[460px] flex flex-col items-center justify-center p-5 sm:p-8 text-center transition-colors duration-200 border ${
         isDarkMode
           ? 'bg-slate-900/90 border-slate-800 text-slate-100'
           : 'bg-white/95 border-slate-200/90 text-slate-900'
@@ -132,7 +132,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
   };
 
   return (
-    <div className={`backdrop-blur-md rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden transition-colors duration-200 border ${
+    <div className={`backdrop-blur-md rounded-2xl shadow-card flex flex-col h-[calc(100dvh-200px)] sm:h-[calc(100dvh-220px)] lg:h-[calc(100vh-140px)] min-h-[400px] sm:min-h-[460px] overflow-hidden transition-colors duration-200 border ${
       isDarkMode
         ? 'bg-slate-900/90 border-slate-800 text-slate-100'
         : 'bg-white/95 border-slate-200/90 text-slate-900'
@@ -433,7 +433,7 @@ export const RiskAnalysisPane: React.FC<RiskAnalysisPaneProps> = ({
                       e.stopPropagation();
                       onOpenFairClause(clause);
                     }}
-                    className={`inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg transition-colors shadow-subtle w-full sm:w-auto border ${
+                    className={`inline-flex items-center justify-center space-x-1.5 text-xs font-semibold px-3 py-2 sm:py-1.5 rounded-lg transition-colors shadow-subtle w-full sm:w-auto min-h-[42px] sm:min-h-0 border ${
                       isDarkMode
                         ? 'text-indigo-300 bg-indigo-950/60 hover:bg-indigo-900/80 border-indigo-800/80'
                         : 'text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border-indigo-200'

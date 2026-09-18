@@ -96,7 +96,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
   };
 
   return (
-    <div className={`backdrop-blur-md border rounded-2xl shadow-card flex flex-col h-[calc(100vh-210px)] lg:h-[calc(100vh-140px)] min-h-[460px] overflow-hidden transition-colors ${
+    <div className={`backdrop-blur-md border rounded-2xl shadow-card flex flex-col h-[calc(100dvh-200px)] sm:h-[calc(100dvh-220px)] lg:h-[calc(100vh-140px)] min-h-[400px] sm:min-h-[460px] overflow-hidden transition-colors ${
       isDarkMode 
         ? 'bg-slate-900/90 border-slate-800 text-slate-100' 
         : 'bg-white/95 border-slate-200/90 text-slate-900'
@@ -317,7 +317,7 @@ export const DocumentPane: React.FC<DocumentPaneProps> = ({
         <button
           onClick={onAnalyze}
           disabled={isAnalyzing || !documentText.trim()}
-          className={`inline-flex items-center justify-center space-x-2 px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all w-full sm:w-auto ${
+          className={`inline-flex items-center justify-center space-x-2 px-4 sm:px-5 py-2.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold shadow-sm transition-all w-full sm:w-auto min-h-[44px] sm:min-h-0 ${
             isAnalyzing || !documentText.trim()
               ? isDarkMode
                 ? 'bg-slate-800 cursor-not-allowed text-slate-500 border border-slate-700'

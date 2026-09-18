@@ -1,6 +1,8 @@
 .split-flap-text {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  max-width: 100%;
   gap: var(--split-flap-gap, 6px);
   color: var(--split-flap-text-color, #f8fafc);
   font-family: 'SFMono-Regular', 'Roboto Mono', 'Cascadia Code', 'Liberation Mono', Menlo, monospace;

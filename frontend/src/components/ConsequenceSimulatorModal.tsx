@@ -60,33 +60,33 @@ export const ConsequenceSimulatorModal: React.FC<ConsequenceSimulatorModalProps>
   };
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-4">
+      <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-2xl w-full max-h-[90dvh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         {/* Header */}
-        <div className="px-6 py-4 bg-gradient-to-r from-indigo-50 via-white to-amber-50 border-b border-slate-200 flex items-center justify-between">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gradient-to-r from-indigo-50 via-white to-amber-50 border-b border-slate-200 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900 font-['Outfit']">
-                "What Would Happen to Me?" — Consequence Simulator
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 font-['Outfit'] truncate">
+                Consequence Simulator ("What Would Happen?")
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-[11px] sm:text-xs text-slate-500 truncate">
                 Simulate real legal consequences before taking action under Indian law
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
+            className="p-1 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors flex-shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6 space-y-5">
+        <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 overflow-y-auto flex-1">
           {/* Quick Scenario Buttons */}
           <div>
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">
@@ -100,7 +100,7 @@ export const ConsequenceSimulatorModal: React.FC<ConsequenceSimulatorModalProps>
                     setScenario(preset);
                     handleSimulate(preset);
                   }}
-                  className="text-xs bg-slate-100 hover:bg-indigo-50 hover:text-indigo-800 text-slate-700 border border-slate-200 hover:border-indigo-200 px-3 py-1.5 rounded-lg text-left transition-all"
+                  className="text-xs bg-slate-100 hover:bg-indigo-50 hover:text-indigo-800 text-slate-700 border border-slate-200 hover:border-indigo-200 px-2.5 sm:px-3 py-1.5 rounded-lg text-left transition-all"
                 >
                   {preset}
                 </button>
@@ -109,19 +109,19 @@ export const ConsequenceSimulatorModal: React.FC<ConsequenceSimulatorModalProps>
           </div>
 
           {/* Scenario Input Box */}
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
             <input
               type="text"
               value={scenario}
               onChange={(e) => setScenario(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSimulate()}
-              placeholder="Ask a scenario: e.g. What if I vacate without notice? What if recovery agents visit my home?"
+              placeholder="Ask a scenario: e.g. What if I vacate without notice? What if recovery agents call?"
               className="flex-1 text-xs sm:text-sm bg-slate-50 text-slate-900 border border-slate-300 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all placeholder-slate-400"
             />
             <button
               onClick={() => handleSimulate()}
               disabled={isLoading || !scenario.trim()}
-              className={`inline-flex items-center space-x-1 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white shadow-sm transition-all ${
+              className={`inline-flex items-center justify-center space-x-1 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-white shadow-sm transition-all min-h-[42px] sm:min-h-0 ${
                 isLoading || !scenario.trim()
                   ? 'bg-slate-300 cursor-not-allowed'
                   : 'bg-indigo-600 hover:bg-indigo-700 active:scale-98'
