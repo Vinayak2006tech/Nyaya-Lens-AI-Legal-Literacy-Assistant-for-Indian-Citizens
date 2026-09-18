@@ -179,9 +179,9 @@ export const App: React.FC = () => {
         });
       } catch (e) {}
 
-    } catch (err) {
+    } catch (err: any) {
       console.error('Analysis error:', err);
-      alert('Failed to analyze document. Please ensure services are active.');
+      alert(err.message || 'Failed to analyze document. Please check your network connection and try again.');
     } finally {
       setIsAnalyzing(false);
     }

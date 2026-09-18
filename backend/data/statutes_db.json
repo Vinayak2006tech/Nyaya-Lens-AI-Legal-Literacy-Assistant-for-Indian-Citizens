@@ -1,0 +1,136 @@
+{
+  "statutes": [
+    {
+      "id": "ICA-1872-SEC23",
+      "act": "Indian Contract Act, 1872",
+      "section": "Section 23",
+      "title": "What considerations and objects are lawful, and what not",
+      "summary": "Agreements whose object or consideration is forbidden by law, defeats provisions of law, or is regarded as immoral or opposed to public policy are void.",
+      "relevance_keywords": ["unlawful", "waiver of rights", "arbitrary forfeiture", "illegal penalty", "opposed to public policy"],
+      "authority": "Supreme Court of India / High Courts",
+      "remedy": "The clause is ab initio void and unenforceable before any court of law."
+    },
+    {
+      "id": "ICA-1872-SEC28",
+      "act": "Indian Contract Act, 1872",
+      "section": "Section 28",
+      "title": "Agreements in restraint of legal proceedings, void",
+      "summary": "Every agreement by which any party is restricted absolutely from enforcing their rights by the usual legal proceedings in ordinary tribunals, or which limits the time to enforce rights, is void to that extent.",
+      "relevance_keywords": ["waiver of court jurisdiction", "exclusive foreign arbitration", "barring legal notice", "no court remedy"],
+      "authority": "District Courts / High Courts",
+      "remedy": "Citizens cannot be barred by a contract from approaching civil courts or consumer forums."
+    },
+    {
+      "id": "ICA-1872-SEC74",
+      "act": "Indian Contract Act, 1872",
+      "section": "Section 74",
+      "title": "Compensation for breach of contract where penalty stipulated for",
+      "summary": "When a contract is broken, if a sum is named as penalty, the party complaining is only entitled to receive reasonable compensation not exceeding the amount named, and cannot levy punitive or unconscionable forfeitures.",
+      "relevance_keywords": ["forfeit 100% deposit", "exorbitant penalty", "unreasonable damages", "punitive deduction"],
+      "authority": "Civil Court",
+      "remedy": "Forfeiture must represent genuine pre-estimated loss; unearned entire security deposit confiscation is illegal."
+    },
+    {
+      "id": "CPA-2019-SEC2-46",
+      "act": "Consumer Protection Act, 2019",
+      "section": "Section 2(46) r/w Section 49",
+      "title": "Unfair Contract Terms",
+      "summary": "A contract with a consumer having terms that cause significant change in consumer rights, such as requiring excessive security deposits, imposing unreasonable penalty, unilateral termination without reasonable cause, or refusing early termination.",
+      "relevance_keywords": ["unfair contract", "one-sided agreement", "excessive deposit", "unilateral termination", "hidden fee"],
+      "authority": "District / State Consumer Disputes Redressal Commission (DCDRC)",
+      "remedy": "Consumer Commission has statutory power to declare unfair contract clauses null and void."
+    },
+    {
+      "id": "MTA-2021-SEC13",
+      "act": "Model Tenancy Act, 2021 / State Rent Control Acts",
+      "section": "Section 13 & 21",
+      "title": "Ceiling on Security Deposit & Restrictions on Eviction",
+      "summary": "Security deposit for residential premises cannot exceed two months' rent. Landlord cannot evict tenant without following due legal notice procedure and cannot unilaterally cut off essential supplies (water/electricity).",
+      "relevance_keywords": ["6 months deposit", "10 months deposit", "instant eviction", "cut off electricity", "cut off water", "lockout"],
+      "authority": "Rent Authority / Rent Court / Rent Tribunal",
+      "remedy": "Landlord cutting essential services or seizing premises is punishable with statutory penalties and restoration orders."
+    },
+    {
+      "id": "MTA-2021-SEC15",
+      "act": "Model Tenancy Act, 2021",
+      "section": "Section 15",
+      "title": "Entry of Landlord into Premises with Prior Written Notice",
+      "summary": "Landlord or property manager cannot enter premises without at least 24 hours prior written notice (or electronic message) and entry must be between 7:00 AM and 8:00 PM.",
+      "relevance_keywords": ["unannounced inspection", "entry anytime without notice", "landlord duplicate key entry", "surprise inspection"],
+      "authority": "Rent Tribunal / Police for trespass",
+      "remedy": "Unannounced entry is a violation of privacy and constitutes civil trespass."
+    },
+    {
+      "id": "RBI-FPC-NBFC-2023",
+      "act": "RBI Master Direction – Fair Practices Code for Lenders",
+      "section": "Clause 2.1 & 3.4",
+      "title": "Code of Conduct for Recovery and Prohibition of Harassment",
+      "summary": "Recovery agents shall not resort to intimidation, harassment (verbal or physical), calling borrowers before 8:00 AM or after 7:00 PM, contacting borrowers' phonebook contacts, or threatening criminal arrest for debt default.",
+      "relevance_keywords": ["recovery agent harassment", "threatening police arrest for loan", "calling relatives", "calling employer", "public shaming", "calling at night"],
+      "authority": "RBI Ombudsman / Banking Lokpal / Consumer Commission",
+      "remedy": "File immediate complaint on RBI CMS (sachet.rbi.org.in); criminal FIR under BNS 351/IPC 506 for criminal intimidation."
+    },
+    {
+      "id": "IT-ACT-2000-SEC66D",
+      "act": "Information Technology Act, 2000",
+      "section": "Section 66D",
+      "title": "Punishment for cheating by personation by using computer resource",
+      "summary": "Whoever by means of any communication device or computer resource cheats by personation (e.g., posing as Court, Police, CBI, ED, or RBI) shall be punished with imprisonment up to 3 years and fine.",
+      "relevance_keywords": ["fake legal notice", "fake warrant", "pay to UPI to avoid arrest", "cyber fraud", "digital arrest"],
+      "authority": "Cyber Crime Police Station / National Cyber Crime Portal (1930 / cybercrime.gov.in)",
+      "remedy": "Immediately report to 1930; do not remit any funds; legal notices from Indian Courts never demand instant UPI transfers."
+    },
+    {
+      "id": "RERA-2016-SEC18",
+      "act": "Real Estate (Regulation and Development) Act, 2016",
+      "section": "Section 18 & 19",
+      "title": "Rights of Allottees and Return of Amount with Interest",
+      "summary": "If builder fails to give possession in accordance with terms, buyer is entitled to claim full refund with interest or monthly interest compensation till possession.",
+      "relevance_keywords": ["builder delay", "no compensation for delay", "force majeure unilateral extension", "builder agreement one sided"],
+      "authority": "Real Estate Regulatory Authority (RERA)",
+      "remedy": "File petition before State RERA for refund with prescribed SBI MCLR + 2% interest rate."
+    },
+    {
+      "id": "BNS-2023-SEC351",
+      "act": "Bharatiya Nyaya Sanhita, 2023 (formerly IPC Sec 506)",
+      "section": "Section 351(2)",
+      "title": "Criminal Intimidation",
+      "summary": "Threatening injury to person, reputation or property with intent to cause alarm is a criminal offence punishable with imprisonment.",
+      "relevance_keywords": ["threatening death", "threatening reputation harm", "sending goons", "threatening to ruin credit score illegitimately"],
+      "authority": "Local Police Station (FIR)",
+      "remedy": "Lenders cannot use physical threats or goons. Register police complaint immediately."
+    }
+  ],
+  "government_portals": [
+    {
+      "name": "National Consumer Helpline (NCH)",
+      "portal_url": "https://consumerhelpline.gov.in",
+      "helpline": "1915",
+      "coverage": "Unfair contract terms, security deposit refusal, deficient consumer services"
+    },
+    {
+      "name": "National Cyber Crime Reporting Portal",
+      "portal_url": "https://cybercrime.gov.in",
+      "helpline": "1930",
+      "coverage": "Fake legal notices, phishing recovery threats, digital arrest scams"
+    },
+    {
+      "name": "RBI Complaint Management System (CMS)",
+      "portal_url": "https://cms.rbi.org.in",
+      "helpline": "14448",
+      "coverage": "Predatory loan apps, recovery agent harassment, violation of RBI Fair Practices Code"
+    },
+    {
+      "name": "National Legal Services Authority (NALSA) / Lok Adalat",
+      "portal_url": "https://nalsa.gov.in",
+      "helpline": "15100",
+      "coverage": "Free legal aid, pre-litigation mediation for rent and contract disputes"
+    },
+    {
+      "name": "State Real Estate Regulatory Authority (RERA)",
+      "portal_url": "https://rera.nic.in",
+      "helpline": "State specific",
+      "coverage": "Real estate lease, tenancy disputes, builder non-compliance"
+    }
+  ]
+}
